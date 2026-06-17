@@ -1,0 +1,17 @@
+// Importar variables globales
+@use '../../styles/variables.scss' as *;
+
+// Ejemplo de componente dashboard usando variables globales
+// Ver src/styles/README.md para documentación completa
+
+.dashboard {
+  padding: $spacing-lg;
+
+  @include tablet {
+    padding: $spacing-xl;
+  }
+
+  @include desktop {
+    padding: $spacing-2xl;
+  }
+}

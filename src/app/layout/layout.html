@@ -1,0 +1,19 @@
+<div class="layout">
+  <div class="layout-content">
+    <nav class="layout-content-nav">
+      <div class="content-logo-nav">
+        <img src="/logo.svg" alt="Logo" class="logo">
+        <h1>Finanzas <span>Personales</span></h1>
+      </div>
+      @for(link of routes; track link.label;) {
+        <a [routerLink]="link.url" routerLinkActive="active" class="nav-link">
+          <i class="{{link.icon}}"></i>
+          {{ link.label }}
+        </a>
+      }
+    </nav>
+    <div class="layout-content-main">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
