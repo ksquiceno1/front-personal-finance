@@ -13,7 +13,7 @@ export class Layout {
     {
       icon: 'fa-regular fa-house',
       label: 'Dashboard',
-      url: '/'
+      url: '/dashboard'
     },
     {
       icon: 'fa-regular fa-credit-card',

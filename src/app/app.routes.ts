@@ -6,7 +6,7 @@ export const routes: Routes = [{
     component: Layout,
     children: [
         {
-            path: '',
+            path: 'dashboard',
             loadComponent: () => import('./dashboard/dashboard').then(m => m.Dashboard)
         }
     ]
