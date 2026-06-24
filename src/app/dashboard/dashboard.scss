@@ -9,15 +9,6 @@
 
 .container {
     width: 100%;
-    // padding: $spacing-lg;
-
-    // @include tablet {
-    //     padding: $spacing-xl;
-    // }
-
-    // @include desktop {
-    //     padding: $spacing-2xl;
-    // }
 }
 
 .header {
@@ -182,6 +173,18 @@
 
     .chart-card {
         flex: 0 60%;
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+
+            h3 {
+                margin: 0;
+                font-size: 1rem;
+                font-weight: 600;
+                color: $text-black;
+            }
+        }
     }
 
     .categories-card {

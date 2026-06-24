@@ -56,11 +56,16 @@
         <div class="section-2">
             <div class="card chart-card">
                 <div class="chart-header">
-                    <h3>Distribución de Gastos</h3>
+                    <h3>Resumen {{select}}</h3>
+                    <select [(ngModel)]="select" class="selector">
+                        <option value="Mensual">Mensual</option>
+                        <option value="Trimestral">Trimestral</option>
+                        <option value="Anual">Anual</option>
+                    </select>
                 </div>
                 <div class="chart-body">
                     <!-- Aquí iría un gráfico de barras -->
-                   <app-chart-bar [data]="chartData" [labels]="chartLabels" />
+                    <app-chart-bar [data]="dataSets" [labels]="chartLabels" />
                 </div>
             </div>
             <div class="card categories-card">
