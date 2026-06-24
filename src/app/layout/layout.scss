@@ -89,7 +89,7 @@
             h1 {
                 font-size: 1.2rem;
                 font-weight: 500;
-                color: #e0ebdf;
+                color: $text-white;
                 display: flex;
                 flex-direction: column;
 
@@ -112,7 +112,7 @@
         a {
             padding: $spacing-unit * 0.75 $spacing-unit;
             text-decoration: none;
-            color: #f0f0f0;
+            color: $text-white;
             font-size: 0.9rem;
             border-radius: 10px;
             transition: all $transition-duration ease;
@@ -133,13 +133,13 @@
 
             &:hover {
                 background-color: $primary-600;
-                color: #f0f0f0;
+                color: $text-white;
             }
 
             &:active,
             &.active {
                 background-color: $primary-600;
-                color: #f0f0f0;
+                color: $text-white;
 
                 @media (max-width: ($breakpoint-desktop - 1px)) {
                     border-bottom: 2px solid $primary-600;
@@ -149,7 +149,7 @@
             i {
                 margin-right: $spacing-unit * 0.5;
                 font-size: 1.2rem;
-                color: #f0f0f0;
+                color: $text-white;
 
                 @media (min-width: $breakpoint-tablet) {
                     font-size: 1.5rem;
@@ -159,7 +159,7 @@
 
         .nav-card {
             background: linear-gradient(135deg, $primary-700 0%, $primary-800 100%);
-            color: #f0f0f0;
+            color: $text-white;
             border: 0.5px solid $primary-500;
             border-radius: $border-radius-md;
             padding: $spacing-unit;
@@ -176,13 +176,13 @@
 
             i {
                 font-size: 1.5rem;
-                color: #f0f0f0;
+                color: $text-white;
                 margin-bottom: $spacing-unit * 0.5;
             }
 
             span {
                 font-size: 0.9rem;
-                color: #f0f0f0;
+                color: $text-white;
             }
 
             .nav-card-button {

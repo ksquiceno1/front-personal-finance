@@ -1,19 +1,23 @@
 // Importar variables globales
 @use '../../styles/variables.scss' as *;
 
-// Ejemplo de componente dashboard usando variables globales
-// Ver src/styles/README.md para documentación completa
+@mixin sections {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-md;
+}
 
 .container {
-  padding: $spacing-lg;
+    width: 100%;
+    // padding: $spacing-lg;
 
-  @include tablet {
-    padding: $spacing-xl;
-  }
+    // @include tablet {
+    //     padding: $spacing-xl;
+    // }
 
-  @include desktop {
-    padding: $spacing-2xl;
-  }
+    // @include desktop {
+    //     padding: $spacing-2xl;
+    // }
 }
 
 .header {
@@ -41,5 +45,146 @@
             font-size: 1rem;
             color: #666;
         }
+    }
+}
+
+.section-1 {
+    @include sections;
+
+    .cards-ie {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $spacing-sm;
+        flex: 0 60%;
+        
+        .ie-card {
+            display: flex;
+            align-items: center;
+            width: 49%;
+            gap: $spacing-xs;
+
+            .icon {
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                &.income {
+                    background-color: #e8f3e5; // Color de fondo para ingresos
+
+                    i {
+                        color: $text-green;
+                    }
+                }
+
+                &.expense {
+                    background-color: #fde2e2; // Color de fondo para gastos
+
+                    i {
+                        color: $text-red;
+                    }
+                }
+
+                i {
+                    font-size: 1.5rem;
+                }
+            }
+
+            .side {
+                .card-header {
+                    display: flex;
+                    flex-direction: column;
+                    gap: $spacing-sm;
+
+                    h3 {
+                        margin: 0;
+                        font-size: 0.8rem;
+                        font-weight: 500;
+                    }
+
+                    span {
+                        font-size: 1.25rem;
+                        font-weight: 600;
+                    }
+                }
+
+                .card-body {
+                    display: flex;
+                    align-items: center;
+                    gap: $spacing-xs;
+
+                    i {
+                        font-size: 0.75rem;
+                    }
+
+                    p {
+                        margin: 0;
+                        font-size: 0.75rem;
+                        color: $text-secondary;
+                    }
+                }
+
+                .income {
+                    color: $text-green;
+                }
+
+                .expense {
+                    color: $text-red;
+                }
+            }
+        }
+    }
+
+    .balance-card {
+        background: linear-gradient(to bottom, #247219, #134c16);
+        border-radius: $border-radius-md;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: $spacing-md;
+        min-width: 200px;
+        flex: 1;
+        gap: $spacing-sm;
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: $text-white;
+
+            h3 {
+                margin: 0;
+                font-size: 0.875rem;
+                font-weight: 500;
+            }
+        }
+
+        .card-body {
+            margin-top: $spacing-sm;
+            color: $text-white;
+            gap: $spacing-xs;
+
+            span {
+                font-size: 1.5rem;
+                font-weight: 600;
+            }
+
+            p {
+                margin: 0;
+                font-size: 0.75rem;
+            }
+        }
+    }
+}
+
+.section-2 {
+    @include sections;
+
+    .chart-card {
+        flex: 0 60%;
+    }
+
+    .categories-card {
+        flex: 1;
     }
 }

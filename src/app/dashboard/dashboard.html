@@ -6,4 +6,115 @@
         </div>
         <input type="date" [(ngModel)]="date" class="date-picker">
     </div>
+    <div class="content">
+        <!-- Sección 1: Tarjetas de ingresos y gastos, Saldo -->
+        <div class="section-1">
+            <div class="cards-ie">
+                <div class="card ie-card">
+                    <div class="icon income">
+                        <i class="fa-solid fa-arrow-down"></i>
+                    </div>
+                    <div class="side">
+                        <div class="card-header income">
+                            <h3>Ingresos</h3>
+                            <span>{{income | currency}}</span>
+                        </div>
+                        <div class="card-body">
+                            <i class="fa-solid fa-arrow-trend-up income"></i>
+                            <p><span class="income">+12%</span> vs Mes anterior</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card ie-card">
+                    <div class="icon expense">
+                        <i class="fa-solid fa-arrow-up"></i>
+                    </div>
+                    <div class="side">
+                        <div class="card-header expense">
+                            <h3>Gastos</h3>
+                            <span>{{expenses | currency}}</span>
+                        </div>
+                        <div class="card-body">
+                            <i class="fa-solid fa-arrow-trend-down expense"></i>
+                            <p><span class="expense">-8%</span> vs Mes anterior</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card balance-card">
+                <div class="card-header">
+                    <h3>Saldo Disponible</h3>
+                </div>
+                <div class="card-body">
+                    <span>{{balance | currency}}</span>
+                    <p>Este es tu saldo disponible actual.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección 2: Gráfico de distribución de gastos y categorías -->
+        <div class="section-2">
+            <div class="card chart-card">
+                <div class="chart-header">
+                    <h3>Distribución de Gastos</h3>
+                </div>
+                <div class="chart-body">
+                    <!-- Aquí iría un gráfico de barras -->
+                   <app-chart-bar [data]="chartData" [labels]="chartLabels" />
+                </div>
+            </div>
+            <div class="card categories-card">
+                <div class="categories-header">
+                    <h3>Categorías Principales</h3>
+                    <a href="/categories">Ver todas</a>
+                </div>
+                <div class="categories-body">
+                    <div>
+                        <div class="category-icon">
+                            <i class="fa-regular fa-house"></i>
+                        </div>
+                        <div class="category-details">
+                            <div class="category-header">
+                                <span class="category-name">Hogar</span>
+                                <span class="category-percentage">85%</span>
+                            </div>
+                            <span class="category-amount">$994090</span>
+                            <div class="progress-container">
+                                <div class="progress-bar">
+                                    <div class="progress" [style.width.%]="85"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección 3: Lista de transacciones recientes -->
+        <div class="section-3">
+            <div class="card transactions-card">
+                <div class="transactions-header">
+                    <h3>Transacciones Recientes</h3>
+                    <a href="/transactions">Ver todas</a>
+                </div>
+                <div class="transactions-body">
+                    <div class="transaction">
+                        <div class="transaction-icon">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <span class="transaction-name">Compra en Supermercado</span>
+                            <span class="transaction-date">2024-06-15</span>
+                        </div>
+                        <div class="transaction-amount-container">
+                            <span class="transaction-amount">-$150.00</span>
+                            <span>Egreso</span>
+                        </div>
+                    </div>
+                    <!-- Más transacciones... -->
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>

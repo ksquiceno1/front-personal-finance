@@ -1,0 +1,180 @@
+// Importar variables globales
+@use './variables.scss' as *;
+
+// ========================
+// GLOBAL STYLES FOR DATE PICKER
+// ========================
+
+// Estilos globales para inputs de tipo date
+input[type='date'] {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+// Clase personalizada para date-picker
+.date-picker {
+    // Variables de personalización
+    --picker-bg: #{$card-background};
+    --picker-text: #{$text-black};
+    --picker-border-focus: #{$primary-color};
+    --picker-shadow-focus: rgba(#{red($primary-color)}, #{green($primary-color)}, #{blue($primary-color)}, 0.1);
+    --picker-transition: all 0.3s ease;
+
+    position: relative;
+    padding: $spacing-xs $spacing-xl $spacing-xs $spacing-sm;
+    border-radius: $border-radius-md;
+    font-size: 1rem;
+    color: var(--picker-text);
+    background-color: var(--picker-bg);
+    cursor: pointer;
+    transition: var(--picker-transition);
+    min-width: 180px;
+    border: none;
+
+    // Hover state
+    &:hover {
+        // border-color: $primary-color;
+        box-shadow: 0 2px 8px var(--picker-shadow-focus);
+    }
+
+    // Focus state
+    &:focus,
+    &:focus-visible {
+        outline: none;
+        // border-color: $primary-color;
+        box-shadow: 0 0 0 3px var(--picker-shadow-focus);
+    }
+
+    // Ocultar el icono de calendario del navegador pero mantener la funcionalidad
+    &::-webkit-calendar-picker-indicator {
+        opacity: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    &::-moz-calendar-picker-indicator {
+        opacity: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+
+    // Date input field styling (Chrome, Edge, Opera)
+    &::-webkit-datetime-edit {
+        color: var(--picker-text);
+        padding: $spacing-sm $spacing-md;
+    }
+
+    &::-webkit-datetime-edit-fields-wrapper {
+        padding: 0;
+    }
+
+    &::-webkit-datetime-edit-text {
+        color: $text-secondary;
+        padding: 0 $spacing-xs;
+    }
+
+    &::-webkit-datetime-edit-month-field,
+    &::-webkit-datetime-edit-day-field,
+    &::-webkit-datetime-edit-year-field {
+        color: var(--picker-text);
+        font-weight: 500;
+        padding: 0 $spacing-xs;
+    }
+
+    // Placeholder styling
+    &::placeholder {
+        color: $text-secondary;
+    }
+
+    // Crear icono de flecha hacia abajo personalizado
+    &::after {
+        content: '';
+        position: absolute;
+        right: $spacing-lg;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 6px;
+        height: 6px;
+        border-right: 2px solid $primary-color;
+        border-bottom: 2px solid $primary-color;
+        transform: translateY(-60%) rotate(45deg);
+        pointer-events: none;
+        transition: all 0.2s ease;
+        pointer-events: none;
+    }
+
+    // Efecto hover en la flecha
+    &:hover::after {
+        border-color: $primary-color;
+        opacity: 1;
+    }
+
+    // Efecto focus en la flecha
+    &:focus::after,
+    &:focus-visible::after {
+        border-color: $primary-color;
+        transform: translateY(-60%) rotate(45deg) scale(1.2);
+    }
+
+    // Disabled state
+    &:disabled {
+        background-color: #f5f5f5;
+        border-color: #ddd;
+        color: #999;
+        cursor: not-allowed;
+        opacity: 0.6;
+
+        &::after {
+            border-color: #999;
+            opacity: 0.4;
+        }
+    }
+
+    // Invalid state (para validación)
+    &:invalid {
+        border-color: $error-egreso;
+
+        &:focus,
+        &:focus-visible {
+            box-shadow: 0 0 0 3px rgba($error-egreso, 0.1);
+        }
+    }
+
+    // Required styling
+    &:required:invalid {
+        border-color: $error-egreso;
+    }
+}
+
+// ========================
+// DATE PICKER ANIMATIONS
+// ========================
+@keyframes datePickerPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba($primary-color, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba($primary-color, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba($primary-color, 0);
+    }
+}
+
+// Animación opcional cuando el date-picker está activo
+.date-picker.active {
+    animation: datePickerPulse 1s ease-in-out;
+}
+
+.card {
+    background-color: $card-background;
+    border-radius: $border-radius-md;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: $spacing-md;
+    margin-bottom: $spacing-md;
+}
