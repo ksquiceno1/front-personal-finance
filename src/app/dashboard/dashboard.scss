@@ -47,7 +47,7 @@
         flex-wrap: wrap;
         gap: $spacing-sm;
         flex: 0 60%;
-        
+
         .ie-card {
             display: flex;
             align-items: center;
@@ -63,7 +63,7 @@
                 align-items: center;
 
                 &.income {
-                    background-color: #e8f3e5; // Color de fondo para ingresos
+                    background-color: $background-green-icon; // Color de fondo para ingresos
 
                     i {
                         color: $text-green;
@@ -71,7 +71,7 @@
                 }
 
                 &.expense {
-                    background-color: #fde2e2; // Color de fondo para gastos
+                    background-color: $background-red-icon; // Color de fondo para gastos
 
                     i {
                         color: $text-red;
@@ -189,5 +189,221 @@
 
     .categories-card {
         flex: 1;
+
+        .categories-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: $spacing-md;
+
+            h3 {
+                margin: 0;
+                font-size: 1rem;
+                font-weight: 600;
+                color: $text-black;
+            }
+
+            a {
+                font-size: 0.875rem;
+                font-weight: 600;
+                color: $text-green;
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .categories-body {
+            display: flex;
+            flex-direction: column;
+            gap: $spacing-sm;
+
+            .category {
+                display: flex;
+                align-items: center;
+                gap: $spacing-sm;
+
+                .category-icon {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 10px;
+                    background-color: $background-green-icon; // Cambiar según la categoría
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    i {
+                        font-size: 1.25rem;
+                        color: $text-green; // Cambiar según la categoría
+                    }
+                }
+
+                .category-details {
+                    display: flex;
+                    flex-direction: column;
+                    gap: $spacing-xs;
+                    width: 100%;
+
+                    .category-header {
+                        display: flex;
+                        justify-content: space-between;
+                        width: 100%;
+
+                        .category-name {
+                            font-size: 0.875rem;
+                            font-weight: 600;
+                            color: $text-black;
+                        }
+
+                        .category-percentage {
+                            font-size: 0.765rem;
+                            font-weight: 500;
+                            color: $text-secondary;
+                        }
+                    }
+
+                    .category-amount {
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                        color: $text-black;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.section-3 {
+    @include sections;
+
+    .transactions-card {
+        flex: 1;
+
+        .transactions-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: $spacing-md;
+
+            h3 {
+                margin: 0;
+                font-size: 1rem;
+                font-weight: 600;
+                color: $text-black;
+            }
+
+            a {
+                font-size: 0.875rem;
+                color: $text-green;
+                text-decoration: none;
+                font-weight: 600;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .transactions-body {
+            display: flex;
+            flex-wrap: wrap;
+            gap: $spacing-md;
+
+            .transaction {
+                display: flex;
+                align-items: center;
+                gap: $spacing-sm;
+                min-width: 49%;
+
+                .transaction-icon {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 10px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    i {
+                        font-size: 1.25rem;
+                    }
+
+                    &.bg-income {
+                        background-color: $background-green-icon; // Cambiar según la transacción
+
+                        i {
+                            color: $text-green; // Cambiar según la transacción
+                        }
+                    }
+
+                    &.bg-expense {
+                        background-color: $background-red-icon; // Cambiar según la transacción
+
+                        i {
+                            color: $text-red; // Cambiar según la transacción
+                        }
+                    }
+                }
+
+                .transaction-details {
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                    gap: $spacing-xs;
+
+
+                    .transaction-info {
+                        display: flex;
+                        justify-content: space-between;
+                        width: 100%;
+
+                        .transaction-name {
+                            font-size: 0.875rem;
+                            font-weight: 600;
+                            color: $text-black;
+                        }
+
+                        .transaction-amount {
+                            font-size: 0.875rem;
+                            font-weight: 600;
+
+                            &.income {
+                                color: $text-green;
+                            }
+
+                            &.expense {
+                                color: $text-red;
+                            }
+                        }
+                    }
+
+                    .transaction-date-container {
+                        display: flex;
+                        justify-content: space-between;
+                        width: 100%;
+
+                        .transaction-date {
+                            font-size: 0.765rem;
+                            font-weight: 500;
+                            color: $text-secondary;
+                        }
+
+                        .transaction-type {
+                            font-size: 0.765rem;
+                            font-weight: 500;
+
+                            &.income {
+                                color: $text-green;
+                            }
+
+                            &.expense {
+                                color: $text-red;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
     }
 }

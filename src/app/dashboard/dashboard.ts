@@ -37,6 +37,23 @@ export class Dashboard {
   income: number = 600000;
   expenses: number = 230000;
 
+  transactions = [
+    {
+      type: 'expense',
+      name: 'Compra en Supermercado',
+      amount: 150000,
+      icon: 'fa-solid fa-cart-shopping',
+      date: '2024-06-15',
+    },
+    {
+      type: 'expense',
+      name: 'Arriendo',
+      amount: 600000,
+      icon: 'fa-regular fa-house',
+      date: '2024-06-05',
+    }
+  ]
+
   get balance(): number {
     return this.income - this.expenses;
   }

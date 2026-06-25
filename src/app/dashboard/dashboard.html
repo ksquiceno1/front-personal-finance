@@ -74,7 +74,7 @@
                     <a href="/categories">Ver todas</a>
                 </div>
                 <div class="categories-body">
-                    <div>
+                    <div class="category">
                         <div class="category-icon">
                             <i class="fa-regular fa-house"></i>
                         </div>
@@ -85,8 +85,7 @@
                             </div>
                             <span class="category-amount">$994090</span>
                             <div class="progress-container">
-                                <div class="progress-bar">
-                                    <div class="progress" [style.width.%]="85"></div>
+                                <div class="progress-bar" [style.width.%]="85">
                                 </div>
                             </div>
                         </div>
@@ -103,20 +102,27 @@
                     <a href="/transactions">Ver todas</a>
                 </div>
                 <div class="transactions-body">
-                    <div class="transaction">
-                        <div class="transaction-icon">
-                            <i class="fa-solid fa-cart-shopping"></i>
+                    @for(transaction of transactions; track transaction.name;) {
+                        <div class="transaction">
+                            <div class="transaction-icon" [class.bg-expense]="transaction.type === 'expense'" [class.bg-income]="transaction.type === 'income'">
+                                <i class="{{transaction.icon}}"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <div class="transaction-info">
+                                    <span class="transaction-name">{{transaction.name}}</span>
+                                    <span class="transaction-amount" [class.expense]="transaction.type === 'expense'" [class.income]="transaction.type === 'income'">
+                                        {{transaction.type === 'expense' ? '-' : ''}}${{transaction.amount | number}}
+                                    </span>
+                                </div>
+                                <div class="transaction-date-container">
+                                    <span class="transaction-date">{{transaction.date | date:'d MMM yyyy'}}</span>
+                                    <span class="transaction-type" [class.expense]="transaction.type === 'expense'" [class.income]="transaction.type === 'income'">
+                                        {{transaction.type === 'expense' ? 'Egreso' : 'Ingreso'}}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="transaction-details">
-                            <span class="transaction-name">Compra en Supermercado</span>
-                            <span class="transaction-date">2024-06-15</span>
-                        </div>
-                        <div class="transaction-amount-container">
-                            <span class="transaction-amount">-$150.00</span>
-                            <span>Egreso</span>
-                        </div>
-                    </div>
-                    <!-- Más transacciones... -->
+                    }
                 </div>
             </div>
 
