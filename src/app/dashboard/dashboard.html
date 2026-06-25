@@ -4,7 +4,11 @@
             <h2>¡Hola, {{nombre}}!</h2>
             <span>Resumen de tus finanzas</span>
         </div>
-        <input type="date" [(ngModel)]="date" class="date-picker">
+        <div class="date-picker-container">
+            <i class="fa-regular fa-calendar"></i>
+            <input #nativeDatePicker type="date" [(ngModel)]="date" class="native-date-picker">
+            <input type="text" [value]="formattedDate" readonly class="date-picker" (focus)="nativeDatePicker.showPicker()">
+        </div>
     </div>
     <div class="content">
         <!-- Sección 1: Tarjetas de ingresos y gastos, Saldo -->

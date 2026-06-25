@@ -37,6 +37,13 @@ export class Dashboard {
   income: number = 600000;
   expenses: number = 230000;
 
+  get formattedDate(): string {
+    const date = new Date(this.date);
+    const day = date.getDate();
+    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+    return `${day} ${months[date.getMonth()]}`;
+  }
+
   transactions = [
     {
       type: 'expense',
