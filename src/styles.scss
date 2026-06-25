@@ -6,8 +6,15 @@
 // Importar estilos globales para componentes
 @use './styles/styles.scss' as *;
 
+@font-face {
+   font-family: noto-sans;
+   src: url(/font/NotoSans-Regular.ttf) format("opentype");
+   font-weight: normal;
+   font-style: normal;
+}
+
 * {
-    font-family: 'Roboto', sans-serif;
+    font-family: noto-sans, sans-serif;
     box-sizing: border-box;
 }
 
