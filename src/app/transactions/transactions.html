@@ -1,0 +1,127 @@
+<div class="container">
+    <div class="header">
+        <div class="icon">
+            <i class="fa-solid fa-file-invoice-dollar"></i>
+        </div>
+        <h1>Transacciones</h1>
+    </div>
+
+    <div class="content">
+        <div class="card ls-transactions">
+            <div class="header-ls">
+                <h3>Historial de transacciones</h3>
+                <button class="button-primary">
+                    <i class="fa-solid fa-plus"></i>
+                    Agregar registro
+                </button>
+            </div>
+            <div class="body-ls">
+                <div class="transaction" [ngClass]="{'expense': true, 'income': false}">
+                    <div class="cat" [ngClass]="{'expense': true, 'income': false}">
+                        <i class="fa-regular fa-house"></i>
+                    </div>
+                    <div class="details">
+                        <div class="section">
+                            <span class="description">Arriendo</span>
+                            <span class="amount">-$610000</span>
+                        </div>
+                        <div class="section">
+                            <span class="date">05/06/2026</span>
+                            <span class="type">Egreso</span>
+                        </div>
+                    </div>
+                    <div class="menu-container">
+                        <button class="button-icon" (click)="showMenu = !showMenu">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                        @if(showMenu) {
+                            <div class="menu">
+                                <button class="item-menu">
+                                    <i class="fa-solid fa-pen" [style.color]="'#025ad2'"></i>
+                                    Editar
+                                </button>
+                                <button class="item-menu">
+                                    <i class="fa-solid fa-trash-can" [style.color]="'#c40b0e'"></i>
+                                    Eliminar
+                                </button>
+                            </div>
+                        }
+                    </div>
+
+                </div>
+                <div class="no-history">
+                    <p>No hay historial</p>
+                </div>
+                <div class="totals">
+                    <span class="total-r">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                        Total registros: 1
+                    </span>
+                    <span class="total-g">
+                        Total gastos:
+                        <span class="amount-g">-156899</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="card fr-transactions">
+            <div class="header-fr">
+                <h3>Agregar Registro</h3>
+                <button class="button-icon red-button">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            </div>
+            <div class="body-fr">
+                <form>
+                    <div class="field-fr">
+                        <label>Fecha</label>
+                        <div class="input-fr">
+                            <i class="fa-regular fa-calendar"></i>
+                            <input #datePicker type="date" [(ngModel)]="date" class="native-date-picker">
+                            <input type="text" readonly placeholder="Selecciona una fecha" [value]="formattedDate"
+                                (focus)="datePicker.showPicker()" class="date-picker">
+                        </div>
+                    </div>
+                    <div class="field-fr">
+                        <label>Valor</label>
+                        <div class="input-fr">
+                            <div class="icon-number">
+                                <i class="fa-solid fa-dollar-sign"></i>
+                            </div>
+                            <input type="number" placeholder="0.00">
+                        </div>
+                    </div>
+                    <div class="field-fr">
+                        <label>Descripción</label>
+                        <div class="input-fr">
+                            <input type="text" placeholder="Escribe una descripción" />
+                        </div>
+                    </div>
+                    <div class="field-fr">
+                        <label>Categoría</label>
+                        <!-- <div class="input-fr"> -->
+                        <select class="selector">
+                            <option value="Mensual">Hogar</option>
+                            <option value="Trimestral">Entretenimiento</option>
+                            <option value="Anual">Viaticos</option>
+                        </select>
+                        <!-- </div> -->
+                    </div>
+                    <div class="field-fr">
+                        <label>Tipo</label>
+                        <!-- <div class="input-fr"> -->
+                        <select class="selector">
+                            <option value="Mensual">Egreso</option>
+                            <option value="Trimestral">Ingreso</option>
+                        </select>
+                        <!-- </div> -->
+                    </div>
+                </form>
+                <button class="button-primary" [style.width.%]="100">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,285 @@
+@use '../../styles/variables.scss' as *;
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+
+    h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: $text-black;
+    }
+
+    .icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: $bg-green-icon;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+            font-size: 1.5rem;
+            color: $text-green;
+        }
+    }
+}
+
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+
+    .ls-transactions {
+        flex: 0 60%;
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-sm;
+
+        .header-ls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            h3 {
+                margin: 0;
+                font-size: 1rem;
+                color: $text-green-dark;
+            }
+        }
+
+        .body-ls {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+
+            .transaction {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: $spacing-md;
+                padding: $spacing-sm $spacing-xs;
+                border-radius: 10px;
+                cursor: pointer;
+
+                &.income {
+
+                    .amount,
+                    .type {
+                        color: $text-green;
+                    }
+
+                    .type {
+                        background-color: $bg-green-icon;
+                    }
+                }
+
+                &.expense {
+
+                    .amount,
+                    .type {
+                        color: $text-red;
+                    }
+
+                    .type {
+                        background-color: $bg-red-icon;
+                    }
+                }
+
+
+                .cat {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    i {
+                        font-size: 1.25rem;
+                    }
+
+                    &.income {
+                        background-color: $bg-green-icon;
+
+                        i {
+                            color: $text-green;
+                        }
+                    }
+
+                    &.expense {
+                        background-color: $bg-red-icon;
+
+                        i {
+                            color: $text-red;
+                        }
+                    }
+                }
+
+                .details {
+                    display: flex;
+                    flex-direction: column;
+                    gap: $spacing-xs;
+                    width: 80%;
+
+                    .section {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+
+                        .description,
+                        .amount {
+                            font-size: 0.875rem;
+                            font-weight: 600;
+                        }
+
+                        .date {
+                            font-size: 0.725rem;
+                            font-weight: 500;
+                            color: $text-secondary;
+                        }
+
+                        .type {
+                            font-size: 0.725rem;
+                            padding: $spacing-unit*0.15 $spacing-xs;
+                            border-radius: 6px;
+                            font-weight: 600;
+                        }
+
+                    }
+                }
+            }
+
+            .no-history {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                p {
+                    font-size: 1rem;
+                }
+            }
+
+            .line {
+                border-bottom: solid 2px $text-secondary;
+            }
+
+            .totals {
+                width: 100%;
+                position: absolute;
+                bottom: 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-radius: 10px;
+                background: $bg-green-icon;
+                padding: $spacing-md;
+
+                span {
+                    display: flex;
+                    align-items: center;
+                    gap: $spacing-xs;
+                    font-size: 0.725rem;
+                    color: $text-black;
+                }
+
+                .total-r {
+                    i {
+                        font-size: 1rem;
+                        color: $text-green;
+                    }
+                }
+
+                .total-g {
+                    .amount-g {
+                        font-weight: 600;
+                        color: $text-red;
+                    }
+                }
+            }
+        }
+    }
+
+    .fr-transactions {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-sm;
+
+        .header-fr {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            h3 {
+                margin: 0;
+                font-size: 1rem;
+                font-weight: 600;
+                color: $text-green-dark;
+            }
+
+            .red-button {
+                background-color: $bg-red;
+
+                i {
+                    color: $text-white;
+                }
+
+                &:hover {
+                    opacity: 0.975;
+                }
+            }
+        }
+
+        .body-fr {
+            display: flex;
+            flex-direction: column;
+            gap: $spacing-md;
+
+            .input-fr {
+                position: relative;
+
+                i {
+                    color: #646671;
+                }
+
+                .icon-number {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 40px;
+                    height: 100%;
+                    border-right: 1px solid #e2e3e6;
+                    background: #f7f7f7;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                input[type="number"] {
+                    margin-left: 45px;
+                }
+
+                .native-date-picker {
+                    position: absolute;
+                    opacity: 0;
+                }
+
+                .date-picker {
+                    cursor:pointer
+                }
+            }
+        }
+    }
+}

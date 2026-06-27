@@ -175,3 +175,124 @@ input[type='date'] {
         box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
     }
 }
+
+//Input styling
+.field-fr {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+    margin-bottom: $spacing-xs;
+
+    label {
+        margin: 0;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: $text-green-dark;
+    }
+
+    .input-fr {
+        border: 2px solid #e2e3e6;
+        width: 100%;
+        border-radius: 6px;
+        padding: $spacing-sm;
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+
+        input, textarea {
+            width: 100%;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            border: none;
+            outline: none;
+            background: none;
+            padding: 0;
+            margin: 0;
+            font: inherit;
+            color: inherit;
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            opacity: 0;
+        }
+    }
+}
+
+//Botón general
+
+.button-primary {
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(to bottom, #206233, #1a5c30);
+    color: $text-white;
+    padding: $spacing-sm $spacing-md;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-xs;
+    cursor: pointer;
+
+    &:disabled {
+        opacity: 1;
+        cursor: not-allowed;
+    }
+
+    &:hover {
+        opacity: 0.975;
+    }
+}
+
+.button-icon {
+    border-radius: 50%;
+    padding: $spacing-sm;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #eeeeeebe;
+    }
+
+    &:disabled {
+        opacity: 1;
+        cursor: not-allowed;
+    }
+}
+
+//Estilos Menu opciones
+
+.menu-container {
+    position: relative;
+
+    .menu {
+        position: absolute;
+        top: 30px;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        padding: $spacing-sm;
+        max-width: 160px;
+        background: $background-color;
+        border-radius: 6px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        .item-menu {
+            width: 100%;
+            border: none;
+            border-bottom: solid 2px $text-secondary;
+            color: $text-green-dark;
+            padding: $spacing-xs;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: $spacing-sm;
+            background: transparent;
+            cursor: pointer;
+
+            &:hover {
+                opacity: 0.925;
+            }
+        }
+    }
+}
