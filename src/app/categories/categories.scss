@@ -1,0 +1,253 @@
+@use '../../styles/variables.scss' as *;
+
+@mixin sections {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+}
+
+@mixin subtitle {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text-green-dark;
+}
+
+@mixin card-info {
+    width: 100%;
+    position: absolute;
+    bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    border-radius: 10px;
+    background: #f2f9f3;
+    padding: $spacing-md;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+
+    h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: $text-black;
+    }
+
+    .icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: $bg-green-icon;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+            font-size: 1.5rem;
+            color: $text-green;
+        }
+    }
+}
+
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+
+    .ls-categories {
+        flex: 1;
+        @include sections();
+
+        .header-ls {
+            h3 {
+                @include subtitle();
+            }
+        }
+
+        .body-ls {
+            display: flex;
+            flex-direction: column;
+            gap: $spacing-xs;
+            position: relative;
+            min-height: 160px;
+            height: 100%;
+
+            .card-cat {
+                display: flex;
+                align-items: center;
+                gap: $spacing-sm;
+                width: 100%;
+                padding: $spacing-sm $spacing-md;
+                border-radius: 6px;
+                border: 1px solid #ededf1;
+                background: $background-color;
+
+                .icon {
+                    border-radius: 6px;
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    i {
+                        font-size: 1rem;
+                    }
+                }
+
+                .details {
+                    width: 85%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+
+                    .name {
+                        font-size: 0.865rem;
+                        font-weight: 600;
+                        color: $text-green-dark;
+                    }
+
+                    .actions {
+                        display: flex;
+                        align-items: center;
+                        gap: $spacing-sm;
+
+                        .number {
+                            border-radius: 8px;
+                            background: $text-green-dark;
+                            color: $bg-green-icon;
+                            font-size: 0.865rem;
+                            width: 25px;
+                            height: 25px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                        }
+
+                        i {
+                            font-size: 1rem;
+                            color: $text-green-dark;
+                        }
+                    }
+                }
+
+                &.active {
+                    border-color: #d9ead9;
+                    background: #f3f8f3;
+                }
+            }
+
+            .info {
+                @include card-info();
+                color: $text-green-dark;
+                font-size: 0.765rem;
+
+                i {
+                    color: $text-green;
+                    font-size: 1rem;
+                }
+            }
+        }
+    }
+
+    .ls-transactions {
+        flex: 60% 0;
+        @include sections();
+
+        .header-tr {
+            display: flex;
+            align-items: center;
+            gap: $spacing-sm;
+
+            .icon-cat {
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 10px;
+
+                i {
+                    font-size: 1.25rem;
+                }
+            }
+
+            .section-title {
+                display: flex;
+                flex-direction: column;
+                gap: $spacing-xs;
+
+                h3 {
+                    @include subtitle();
+                }
+
+                span {
+                    color: $text-secondary;
+                    font-size: 0.765rem;
+                }
+            }
+        }
+
+        .body-tr {
+            position: relative;
+            min-height: 160px;
+            height: 100%;
+
+            .no-history {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                p {
+                    font-size: 1rem;
+                }
+            }
+
+            .info-total {
+                @include card-info();
+                justify-content: space-between;
+
+                .subtitle {
+                    display: flex;
+                    align-items: center;
+                    gap: $spacing-sm;
+                    font-size: 0.865rem;
+                    font-weight: 600;
+                    color: $text-green-dark;
+
+                    .icon-w {
+                        border-radius: 6px;
+                        width: 35px;
+                        height: 35px;
+                        background: $bg-green-icon;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        i {
+                            font-size: 1rem;
+                            color: $text-green;
+                        }
+                    }
+
+                }
+
+                .amount {
+                    font-size: 1rem;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}

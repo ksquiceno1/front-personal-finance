@@ -1,0 +1,93 @@
+<div class="container">
+    <div class="header">
+        <div class="icon">
+            <i class="fa-solid fa-wallet"></i>
+        </div>
+        <h1>Categorías</h1>
+    </div>
+    <div class="content">
+        <div class="card ls-categories">
+            <div class="header-ls">
+                <h3>Mis categorías</h3>
+            </div>
+            <div class="body-ls">
+                <div class="card-cat active">
+                    <div class="icon" [style.background]="'#e8f3e5'">
+                        <i class="fa-regular fa-house" [style.color]="'#135812'"></i>
+                    </div>
+                    <div class="details">
+                        <span class="name">
+                            Hogar
+                        </span>
+                        <div class="actions">
+                            <span class="number">2</span>
+                            <i class="fa-solid fa-angle-right"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="info">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <p>Selecciona una categoría para ver sus transacciones y gastos</p>
+                </div>
+            </div>
+        </div>
+        <div class="card ls-transactions">
+            <div class="header-tr">
+                <div class="icon-cat">
+                    <i class="fa-regular fa-house"></i>
+                </div>
+                <div class="section-title">
+                    <h3>Transacciones hogar</h3>
+                    <span>2 Registros</span>
+                </div>
+            </div>
+            <div class="body-tr">
+                <div class="transaction" [ngClass]="{'expense': true, 'income': false}">
+                    <div class="cat" [ngClass]="{'expense': true, 'income': false}">
+                        <i class="fa-regular fa-house"></i>
+                    </div>
+                    <div class="details">
+                        <div class="section">
+                            <span class="description">Arriendo</span>
+                            <span class="amount">-$610000</span>
+                        </div>
+                        <div class="section">
+                            <span class="date">05/06/2026</span>
+                            <span class="type">Egreso</span>
+                        </div>
+                    </div>
+                    <div class="menu-container">
+                        <button class="button-icon" (click)="showMenu = !showMenu">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                        @if(showMenu) {
+                        <div class="menu">
+                            <button class="item-menu">
+                                <i class="fa-solid fa-pen" [style.color]="'#025ad2'"></i>
+                                Editar
+                            </button>
+                            <button class="item-menu" [style.border]="'none'">
+                                <i class="fa-solid fa-trash-can" [style.color]="'#c40b0e'"></i>
+                                Eliminar
+                            </button>
+                        </div>
+                        }
+                    </div>
+
+                </div>
+                <div class="no-history">
+                    <p>No hay historial</p>
+                </div>
+                <div class="info-total">
+                    <span class="subtitle">
+                        <span class="icon-w">
+                            <i class="fa-solid fa-wallet"></i>
+                        </span>
+                        Total gastos
+                    </span>
+                    <span class="amount">-$250000</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
