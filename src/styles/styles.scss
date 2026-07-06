@@ -1,6 +1,18 @@
 // Importar variables globales
 @use './variables.scss' as *;
 
+@mixin card-info {
+    width: 100%;
+    position: absolute;
+    bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    border-radius: 10px;
+    background: #f2f9f3;
+    padding: $spacing-md;
+}
+
 // ========================
 // GLOBAL STYLES FOR DATE PICKER
 // ========================
@@ -244,6 +256,28 @@ input[type='date'] {
     }
 }
 
+.button-outline {
+    border-radius: 10px;
+    border: 2px solid $primary-color;
+    background: transparent;
+    color: $primary-color;
+    padding: $spacing-sm $spacing-md;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-xs;
+    cursor: pointer;
+
+    &:disabled {
+        opacity: 1;
+        cursor: not-allowed;
+    }
+
+    &:hover {
+        opacity: 0.975;
+    }
+}
+
 .button-icon {
     border-radius: 50%;
     padding: $spacing-sm;
@@ -393,5 +427,20 @@ input[type='date'] {
             }
 
         }
+    }
+}
+
+.info {
+    @include card-info();
+    color: $text-green-dark;
+
+    i {
+        color: $text-green;
+        font-size: 1rem;
+    }
+
+    p {
+        margin: 0;
+        font-size: 0.765rem;
     }
 }

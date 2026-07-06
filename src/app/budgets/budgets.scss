@@ -1,0 +1,321 @@
+@use '../../styles/variables.scss' as *;
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .title {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+
+        h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: $text-black;
+        }
+
+        .icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: $bg-green-icon;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            i {
+                font-size: 1.5rem;
+                color: $text-green;
+            }
+        }
+    }
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+
+    .section-1 {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $spacing-sm;
+
+        .info-card {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: $spacing-sm;
+
+            .icon-sec {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 50px;
+                height: 50px;
+                background: $bg-green-icon;
+                border-radius: 50%;
+
+                i {
+                    font-size: 1.25rem;
+                    color: $text-green;
+                }
+            }
+
+            .details {
+                display: flex;
+                flex-direction: column;
+                gap: $spacing-xs;
+
+                .subtitle {
+                    font-size: 0.765rem;
+                    font-weight: 600;
+                    color: $text-green
+                }
+
+                .amount {
+                    font-size: 1.25rem;
+                    font-weight: 600;
+                    color: $text-green-dark;
+                }
+
+                .extra {
+                    font-size: 0.685rem;
+                    color: $text-secondary;
+                }
+            }
+        }
+    }
+
+    .section-2 {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $spacing-sm;
+
+        .summary {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            gap: $spacing-md;
+
+            .chart-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                h3 {
+                    margin: 0;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    color: $text-green-dark;
+                }
+            }
+
+            .chart-container {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: $spacing-sm;
+                margin-bottom: 60px;
+
+                .circle {
+                    flex: 40% 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .chart-details {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    gap: $spacing-xs;
+
+                    .category {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+
+                        .category-info {
+                            display: flex;
+                            align-items: center;
+                            gap: $spacing-xs;
+
+                            .ball {
+                                width: 10px;
+                                height: 10px;
+                                border-radius: 50%;
+                            }
+
+                            .name {
+                                font-size: 0.765rem;
+                                color: $text-secondary;
+                            }
+                        }
+
+                        .amount {
+                            font-size: 0.765rem;
+                            color: $text-green-dark;
+                        }
+
+                        .percentage {
+                            font-size: 0.765rem;
+                            color: $text-secondary;
+                        }
+                    }
+                }
+            }
+        }
+
+        .categories {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: $spacing-md;
+
+            .category-header {
+                display: flex;
+                align-items: center;
+
+                h3 {
+                    margin: 0;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    color: $text-green-dark;
+                }
+            }
+
+            .category-list {
+                display: flex;
+                flex-direction: column;
+                gap: $spacing-sm;
+
+                .category-item {
+                    display: flex;
+                    align-items: center;
+                    gap: $spacing-sm;
+
+                    .icon-cat {
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 10px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+
+                        i {
+                            font-size: 1.25rem;
+                        }
+                    }
+
+                    .details {
+                        display: flex;
+                        flex-direction: column;
+                        width: 75%;
+                        gap: $spacing-sm;
+
+                        .top {
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+
+                            .name {
+                                font-size: 0.765rem;
+                                font-weight: 600;
+                                color: $text-green-dark;
+                            }
+
+                            .amount {
+                                font-size: 0.765rem;
+                                font-weight: 600;
+                                color: $text-green-dark;
+                            }
+                        }
+                    }
+
+                    .percentage {
+                        font-size: 1rem;
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+    }
+
+    .section-3 {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $spacing-sm;
+
+        .recent {
+            flex: 75% 0;
+            display: flex;
+            flex-direction: column;
+            gap: $spacing-md;
+
+            .recent-header {
+                display: flex;
+                align-items: center;
+
+                h3 {
+                    margin: 0;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    color: $text-green-dark;
+                }
+            }
+        }
+
+        .advice {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: $spacing-md;
+
+            .advice-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                h3 {
+                    margin: 0;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    color: $text-green-dark;
+                }
+
+                .advice-icon {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    background-color: $bg-green-icon;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    i {
+                        font-size: 1.25rem;
+                        color: $text-green;
+                    }
+                }
+            }
+
+            p {
+                margin: 0;
+                font-size: 0.765rem;
+                color: $text-secondary;
+            }
+        }
+    }
+}

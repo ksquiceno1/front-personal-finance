@@ -1,0 +1,35 @@
+@use '../../../../styles/variables.scss' as *;
+
+.chart-circle-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.chart-circle-svg {
+    transform: rotate(-90deg);
+}
+
+.circle-background {
+    fill: none;
+    stroke: $border-color;
+}
+
+.circle-progress {
+    fill: none;
+    stroke: $text-green;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.5s ease;
+}
+
+.circle-text {
+    text-anchor: middle;
+    dominant-baseline: middle;
+    font-size: 32px;
+    font-weight: 600;
+    fill: $text-black;
+    transform: rotate(90deg);
+    transform-origin: center;
+}

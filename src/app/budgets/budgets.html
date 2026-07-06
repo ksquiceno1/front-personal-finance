@@ -1,0 +1,144 @@
+<div class="container">
+    <div class="header">
+        <div class="title">
+            <div class="icon">
+                <i class="fa-solid fa-chart-pie"></i>
+            </div>
+            <h1>Presupuestos</h1>
+        </div>
+        <button class="button-primary">
+            <i class="fa-solid fa-plus"></i>
+            Agregar Presupuesto
+        </button>
+    </div>
+    <div class="content">
+        <!-- Sección Resumen presupuesto, gastos, disponible, categorías -->
+        <div class="section-1">
+            <div class="card info-card">
+                <div class="icon-sec">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+                <div class="details">
+                    <span class="subtitle">Presupuesto total</span>
+                    <span class="amount">$2.500.000</span>
+                    <span class="extra">Este mes</span>
+                </div>
+            </div>
+            <div class="card info-card">
+                <div class="icon-sec">
+                    <i class="fa-brands fa-cash-app"></i>
+                </div>
+                <div class="details">
+                    <span class="subtitle">Gastado</span>
+                    <span class="amount">$1.650.000</span>
+                    <span class="extra">65% del total</span>
+                </div>
+            </div>
+            <div class="card info-card">
+                <div class="icon-sec">
+                    <i class="fa-solid fa-bullseye"></i>
+                </div>
+                <div class="details">
+                    <span class="subtitle">Disponible</span>
+                    <span class="amount">$850.000</span>
+                    <span class="extra">34% del total</span>
+                </div>
+            </div>
+            <div class="card info-card">
+                <div class="icon-sec">
+                    <i class="fa-solid fa-chart-simple"></i>
+                </div>
+                <div class="details">
+                    <span class="subtitle">Categorias activas</span>
+                    <span class="amount">5</span>
+                    <span class="extra">De 6 categorías</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección resumen, presupuestos por categoría -->
+        <div class="section-2">
+            <div class="card summary">
+                <div class="chart-header">
+                    <h3>Resumen del presupuesto</h3>
+                    <div class="date-picker-container">
+                        <i class="fa-regular fa-calendar"></i>
+                        <input #nativeDatePicker type="date" [(ngModel)]="date" class="native-date-picker">
+                        <input type="text" [value]="formattedDate" readonly class="date-picker"
+                            (focus)="nativeDatePicker.showPicker()">
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <div class="circle">
+                        <app-chart-circle [percentage]="65" [size]="200"></app-chart-circle>
+                    </div>
+                    <div class="chart-details">
+                        @for(item of [1, 2, 3, 4]; track item) {
+                        <div class="category">
+                            <span class="category-info">
+                                <span class="ball" [style.background]="'green'"></span>
+                                <span class="name">Necesidades</span>
+                            </span>
+                            <span class="amount">{{item == 2 ? '$800.000':'$1.000.000'}}</span>
+                            <span class="percentage">40%</span>
+                        </div>
+                        }
+                    </div>
+                </div>
+                <div class="info" [style.max-width.%]="93">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <p>Llevas un buen control, ¡Sigue así!</p>
+                </div>
+            </div>
+            <div class="card categories">
+                <div class="category-header">
+                    <h3>Presupuestos por categoría</h3>
+                </div>
+                <div class="category-list">
+                    @for(item of [1, 2, 3, 4]; track item) {
+                    <div class="category-item">
+                        <div class="icon-cat" [style.background]="'lightgreen'">
+                            <i class="fa-solid fa-wallet" [style.color]="'green'"></i>
+                        </div>
+                        <div class="details">
+                            <div class="top">
+                                <span class="name">Necesidades</span>
+                                <span class="amount">{{item == 2 ? '$800.000':'$1.000.000'}}</span>
+                            </div>
+                            <div class="progress-container">
+                                <div class="progress-bar" [style.width.%]="85" [style.background]="'green'">
+                                </div>
+                            </div>
+                        </div>
+                        <span class="percentage" [style.color]="'green'">40%</span>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección recientes, consejo -->
+        <div class="section-3">
+            <div class="card recent">
+                <div class="recent-header">
+                    <h3>Presupuestos recientes</h3>
+                </div>
+                <app-table-dynamic [columns]="columns" [rows]="rows"></app-table-dynamic>
+            </div>
+            <div class="card advice">
+                <div class="advice-header">
+                    <h3>Consejos para Ahorrar</h3>
+                    <span class="advice-icon">
+                        <i class="fa-regular fa-lightbulb"></i>
+                    </span>
+                </div>
+                <p>Estas gastando más en entretenimiento de lo presupuestado. Intenta reducir $50.000 para mantener
+                    el equilibrio.</p>
+                <button class="button-outline">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    Ver más consejos
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

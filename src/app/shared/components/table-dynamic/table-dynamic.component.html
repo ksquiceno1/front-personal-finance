@@ -1,0 +1,45 @@
+<div class="table-dynamic-container">
+    <table class="table-dynamic" role="table">
+        <thead>
+            <tr role="row">
+                @for(col of columns; track col) {
+                <th role="columnheader">{{ col.label }}</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for(row of rows; track row; let i = $index;) {
+            <tr role="row">
+                @for(col of columns; track col) {
+                <td role="cell">
+                    @if(col.actions?.length) {
+                    <ng-container>
+                        <div class="menu-container">
+                            <button class="button-icon" (click)="row.showMenu = !row.showMenu">
+                                <i class="fa-solid fa-ellipsis"></i>
+                            </button>
+                            @if(row.showMenu) {
+                            <div class="menu">
+                                @for (btn of col.actions; track btn;) {
+                                <button class="item-menu" (click)="onActionClick(btn.key, row)">
+                                    <i class="fa-solid fa-pen" [style.color]="'#025ad2'"></i>
+                                    {{ btn.label }}
+                                </button>
+                                }
+                            </div>
+                            }
+                        </div>
+                    </ng-container>
+                    }
+                    @else {
+                    <ng-container>
+                        {{ row[col.key] }}
+                    </ng-container>
+                    }
+                </td>
+                }
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

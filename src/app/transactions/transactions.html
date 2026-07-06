@@ -77,7 +77,7 @@
                         <label>Fecha</label>
                         <div class="input-fr">
                             <i class="fa-regular fa-calendar"></i>
-                            <input #datePicker type="date" [(ngModel)]="date" class="native-date-picker">
+                            <input #datePicker type="date" [(ngModel)]="date" name="date" class="native-date-picker">
                             <input type="text" readonly placeholder="Selecciona una fecha" [value]="formattedDate"
                                 (focus)="datePicker.showPicker()" class="date-picker">
                         </div>

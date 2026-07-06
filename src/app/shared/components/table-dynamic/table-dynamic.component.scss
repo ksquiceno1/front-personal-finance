@@ -1,0 +1,54 @@
+@use '../../../../styles/variables.scss' as *;
+
+.table-dynamic-container {
+  background: #fff;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.table-dynamic {
+  width: 100%;
+  border-collapse: collapse;
+  border: none;
+  background: transparent;
+
+  thead {
+    th {
+      color: $text-green-dark;
+      font-weight: 600;
+      text-align: left;
+      padding: 12px 8px;
+      border: none;
+      background: transparent;
+    }
+  }
+
+  tbody {
+    tr {
+      td {
+        padding: 12px 8px;
+        color: inherit;
+        border: none;
+        border-bottom: 1px solid $text-secondary;
+        background: transparent;
+      }
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+  }
+}
+
+.action-btn {
+  background: transparent;
+  border: none;
+  color: $text-green-dark;
+  cursor: pointer;
+  padding: 4px 8px;
+  font-weight: 600;
+}
+
+.action-btn + .action-btn {
+  margin-left: 8px;
+}

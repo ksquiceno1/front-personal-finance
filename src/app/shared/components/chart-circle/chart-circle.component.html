@@ -1,0 +1,29 @@
+<div class="chart-circle-container">
+    <svg [attr.width]="size()" [attr.height]="size()" class="chart-circle-svg">
+        <!-- Background circle -->
+        <circle
+            [attr.cx]="center"
+            [attr.cy]="center"
+            [attr.r]="radius"
+            class="circle-background"
+        />
+        <!-- Progress circle -->
+        <circle
+            [attr.cx]="center"
+            [attr.cy]="center"
+            [attr.r]="radius"
+            [attr.stroke-width]="strokeWidth()"
+            [attr.stroke-dasharray]="circumference"
+            [attr.stroke-dashoffset]="strokeDashoffset"
+            class="circle-progress"
+        />
+        <!-- Percentage text -->
+        <text
+            [attr.x]="center"
+            [attr.y]="center"
+            class="circle-text"
+        >
+            {{ percentage() }}%
+        </text>
+    </svg>
+</div>
