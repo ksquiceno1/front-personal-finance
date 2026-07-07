@@ -15,12 +15,13 @@
 .circle-background {
     fill: none;
     stroke: $border-color;
+    stroke-width: 9px;
 }
 
 .circle-progress {
     fill: none;
-    stroke: $text-green;
-    stroke-linecap: round;
+    stroke: $primary-600;
+    stroke-width: 9px;
     transition: stroke-dashoffset 0.5s ease;
 }
 
@@ -29,6 +30,16 @@
     dominant-baseline: middle;
     font-size: 32px;
     font-weight: 600;
+    fill: $text-black;
+    transform: rotate(90deg);
+    transform-origin: center;
+}
+
+.subtext {
+    text-anchor: middle;
+    dominant-baseline: middle;
+    font-size: 12px;
+    font-weight: 500;
     fill: $text-black;
     transform: rotate(90deg);
     transform-origin: center;

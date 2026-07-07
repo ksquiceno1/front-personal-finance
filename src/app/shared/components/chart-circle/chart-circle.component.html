@@ -1,29 +1,18 @@
 <div class="chart-circle-container">
     <svg [attr.width]="size()" [attr.height]="size()" class="chart-circle-svg">
         <!-- Background circle -->
-        <circle
-            [attr.cx]="center"
-            [attr.cy]="center"
-            [attr.r]="radius"
-            class="circle-background"
-        />
+        <circle [attr.cx]="center" [attr.cy]="center" [attr.r]="radius" class="circle-background" />
         <!-- Progress circle -->
-        <circle
-            [attr.cx]="center"
-            [attr.cy]="center"
-            [attr.r]="radius"
-            [attr.stroke-width]="strokeWidth()"
-            [attr.stroke-dasharray]="circumference"
-            [attr.stroke-dashoffset]="strokeDashoffset"
-            class="circle-progress"
-        />
+        <circle [attr.cx]="center" [attr.cy]="center" [attr.r]="radius" [attr.stroke-width]="strokeWidth()"
+            [attr.stroke-dasharray]="circumference" [attr.stroke-dashoffset]="strokeDashoffset"
+            class="circle-progress" />
         <!-- Percentage text -->
-        <text
-            [attr.x]="center"
-            [attr.y]="center"
-            class="circle-text"
-        >
+        <text [attr.x]="center" [attr.y]="center" class="circle-text">
             {{ percentage() }}%
+        </text>
+        <text class="subtext" [attr.x]="center" [attr.y]="center + 20">
+            <tspan x="center" dy="0">de presupuesto</tspan>
+            <tspan x="center" dy="14">utilizado</tspan>
         </text>
     </svg>
 </div>
