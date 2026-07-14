@@ -32,7 +32,7 @@ input[type='date'] {
     border: 1px solid $border-color;
     border-radius: $border-radius-md;
     padding: $spacing-xs $spacing-sm;
-    width: 135px;
+    min-width: 135px;
 
     i {
         position: static;

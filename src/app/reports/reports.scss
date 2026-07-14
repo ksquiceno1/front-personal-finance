@@ -1,0 +1,418 @@
+@use '../../styles/variables.scss' as *;
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $spacing-md;
+
+    .title {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+
+        h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: $text-black;
+        }
+
+        .icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: $bg-green-icon;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            i {
+                font-size: 1.5rem;
+                color: $text-green;
+            }
+        }
+    }
+
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+    }
+}
+
+
+.date-range-picker {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+}
+
+.date-field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 125px;
+    cursor: pointer;
+
+    label {
+        font-size: 0.7rem;
+        color: $text-secondary;
+    }
+
+    &.first {
+        width: 97px;
+
+        .date-picker {
+            padding-right: $spacing-xs;
+        }
+    }
+}
+
+.content {
+    display: flex;
+    gap: $spacing-md;
+}
+
+.section-1 {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+
+    .summary-card {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-md;
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: $spacing-md;
+        }
+
+        .card-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+
+            .ie-card {
+                display: flex;
+                align-items: center;
+                width: 49%;
+                gap: $spacing-xs;
+
+                .icon {
+                    border-radius: 50%;
+                    width: 50px;
+                    height: 50px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    &.income {
+                        background-color: $bg-green-icon; // Color de fondo para ingresos
+
+                        i {
+                            color: $text-green;
+                        }
+                    }
+
+                    &.expense {
+                        background-color: $bg-red-icon; // Color de fondo para gastos
+
+                        i {
+                            color: $text-red;
+                        }
+                    }
+
+                    i {
+                        font-size: 1.5rem;
+                    }
+                }
+
+                .side {
+                    .card-header {
+                        display: flex;
+                        flex-direction: column;
+                        gap: $spacing-sm;
+
+                        h3 {
+                            margin: 0;
+                            font-size: 0.8rem;
+                            font-weight: 500;
+                        }
+
+                        span {
+                            font-size: 1.25rem;
+                            font-weight: 600;
+                        }
+                    }
+
+                    .card-body {
+                        display: flex;
+                        align-items: center;
+                        gap: $spacing-xs;
+
+                        i {
+                            font-size: 0.75rem;
+                        }
+
+                        p {
+                            margin: 0;
+                            font-size: 0.75rem;
+                            color: $text-secondary;
+                        }
+                    }
+
+                    .income {
+                        color: $text-green;
+                    }
+
+                    .expense {
+                        color: $text-red;
+                    }
+                }
+            }
+        }
+    }
+
+    .graphics {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $spacing-md;
+
+        .header-chart {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: $spacing-md;
+
+            h3 {
+                margin: 0;
+                font-size: 1rem;
+                font-weight: 600;
+                color: $text-green-dark;
+            }
+        }
+
+        .chart-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: $spacing-md;
+            align-items: center;
+
+            .chart-details {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                gap: $spacing-md;
+
+                .category {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+
+                    .category-info {
+                        display: flex;
+                        align-items: center;
+                        gap: $spacing-xs;
+
+                        .ball {
+                            width: 10px;
+                            height: 10px;
+                            border-radius: 50%;
+                        }
+
+                        .name {
+                            font-size: 0.765rem;
+                            color: $text-secondary;
+                        }
+                    }
+
+                    .amount {
+                        font-size: 0.765rem;
+                        color: $text-green-dark;
+                    }
+
+                    .percentage {
+                        font-size: 0.765rem;
+                        color: $text-secondary;
+                    }
+                }
+            }
+        }
+    }
+
+    .export-card {
+        display: flex;
+        align-items: center;
+        gap: $spacing-md;
+
+        .card-header {
+            display: flex;
+            flex-direction: column;
+            gap: $spacing-sm;
+
+            h3 {
+                margin: 0;
+                font-size: 1rem;
+                font-weight: 600;
+                color: $text-green-dark;
+            }
+
+            p {
+                margin: 0;
+                font-size: 0.765rem;
+                color: $text-secondary;
+            }
+        }
+
+        .card-content {
+            display: flex;
+            gap: $spacing-md;
+
+            a {
+                display: flex;
+                align-items: center;
+                gap: $spacing-xs;
+                text-decoration: none;
+                border: 1px solid $text-secondary;
+                padding: $spacing-xs $spacing-sm;
+                border-radius: 6px;
+                color: $text-black;
+                font-size: 0.765rem;
+                font-weight: 600;
+
+                i {
+                    font-size: 1rem;
+                }
+            }
+        }
+    }
+}
+
+.section-2 {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-md;
+
+        h3 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: $text-green-dark;
+        }
+
+        .ls-content {
+            display: flex;
+            flex-direction: column;
+            gap: $spacing-sm;
+
+            .ls-item {
+                display: flex;
+                align-items: center;
+                gap: $spacing-sm;
+                width: 100%;
+
+                .icon-item {
+                    width: 35px;
+                    height: 35px;
+                    border-radius: 10px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    i {
+                        font-size: 1rem;
+                    }
+
+                    &.green {
+                        background-color: $bg-green-icon;
+
+                        i {
+                            color: $text-green;
+                        }
+                    }
+                }
+
+                .item-details {
+                    display: flex;
+                    flex-direction: column;
+                    gap: $spacing-xs;
+                    padding-bottom: $spacing-sm;
+                    border-bottom: 0.8px solid $border-color;
+                    width: 80%;
+
+                    h4 {
+                        margin: 0;
+                        font-size: 0.725rem;
+                        font-weight: 400;
+                        color: $text-black;
+                    }
+
+                    p {
+                        margin: 0;
+                        font-size: 0.875rem;
+                        font-weight: 600;
+                        color: $text-black;
+                    }
+                }
+            }
+
+            .item-r {
+                display: flex;
+                align-items: center;
+                gap: $spacing-sm;
+                padding: $spacing-xs $spacing-sm;
+                background-color: #edf7ee;
+                border-radius: 10px;
+                box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+
+                .icon-r {
+                    width: 35px;
+                    height: 35px;
+                    border-radius: 50%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    i {
+                        font-size: 1rem;
+                    }
+                }
+
+                p {
+                    margin: 0;
+                    font-size: 0.765rem;
+                    color: $text-black;
+                    width: 80%;
+                }
+            }
+        }
+
+        .view-all {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: $spacing-sm 0;
+            cursor: pointer;
+            font-size: 0.765rem;
+            font-weight: 600;
+            color: $primary-500;
+            border-color: #94b093;
+        }
+    }
+}

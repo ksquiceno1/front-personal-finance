@@ -20,6 +20,11 @@ export const routes: Routes = [{
         {
             path: 'budgets',
             loadComponent: () => import('./budgets/budgets').then(m => m.Budgets)
+        },
+        {
+            path: 'reports',
+            loadComponent: () => import('./reports/reports').then(m => m.Reports)
         }
     ]
-}];
+},
+{path: '**', redirectTo: 'dashboard'}];

@@ -9,7 +9,8 @@ import {
     Title,
     Tooltip,
     Legend,
-    ChartDataset
+    ChartDataset,
+    ChartConfiguration
 } from 'chart.js';
 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
@@ -24,22 +25,28 @@ export class ChartBarComponent {
 
     public readonly data = input.required<ChartDataset[]>();
     public readonly labels = input.required<string[]>();
+    public readonly orientation = input<'vertical' | 'horizontal'>('vertical');
 
     ngAfterViewInit() {
-        new Chart(this.chartRef.nativeElement, {
+        new Chart(this.chartRef.nativeElement, this.buildChartConfig(this.labels(), this.data(), this.orientation()));
+    }
+
+    protected buildChartConfig(labels: string[], data: ChartDataset[], orientation: 'vertical' | 'horizontal'): ChartConfiguration {
+        return {
             type: 'bar',
             data: {
-                labels: this.labels(),
-                datasets: this.data()
+                labels,
+                datasets: data,
             },
             options: {
                 responsive: true,
+                indexAxis: orientation === 'horizontal' ? 'y' : 'x',
                 plugins: {
                     legend: {
                         position: 'top',
-                    }
-                }
+                    },
+                },
             },
-        });
+        };
     }
 }
