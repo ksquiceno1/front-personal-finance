@@ -1,0 +1,136 @@
+<div class="container">
+    <div class="header">
+        <div class="title">
+            <div class="icon">
+                <i class="fa-solid fa-thumbtack"></i>
+            </div>
+            <h1>Mis Metas</h1>
+        </div>
+        <button class="button-primary">
+            <i class="fa-solid fa-plus"></i>
+            Nueva Meta
+        </button>
+    </div>
+    <div class="content">
+        <div class="section-1">
+            <div class="card info-card green">
+                <div class="icon-sec">
+                    <i class="fa-solid fa-thumbtack"></i>
+                </div>
+                <div class="details">
+                    <h4>Metas Activas</h4>
+                    <span class="amount">0</span>
+                    <p class="description">Metas que están en progreso</p>
+                </div>
+            </div>
+            <div class="card info-card blue">
+                <div class="icon-sec">
+                    <i class="fa-solid fa-flag"></i>
+                </div>
+                <div class="details">
+                    <h4>Total Ahorrado</h4>
+                    <span class="amount">$0.00</span>
+                    <p class="description">De todas tus metas</p>
+                </div>
+            </div>
+            <div class="card info-card purple">
+                <div class="icon-sec">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <div class="details">
+                    <h4>Meta más cercana</h4>
+                    <span class="amount">Nothing</span>
+                    <p class="description">Al 70% de completarse</p>
+                </div>
+            </div>
+        </div>
+        <div class="section-2">
+            <div class="card ls-goals">
+                <div class="card-header">
+                    <h3>Metas Activas</h3>
+                    <select [(ngModel)]="select" class="selector">
+                        <option value="Todas">Todas</option>
+                        <option value="Trimestral">Trimestral</option>
+                        <option value="Anual">Anual</option>
+                    </select>
+                </div>
+                <div class="content-ls">
+                    <div class="goal">
+                        <div class="icon-goal" [style.background]="'#e8f3e5'">
+                            <i class="fa-solid fa-house" [style.color]="'#135812'"></i>
+                        </div>
+                        <div class="details-goal">
+                            <h4>Meta 1</h4>
+                            <div class="info-goal">
+                                <div class="part">
+                                    <span class="gray-text">categoria</span>
+                                    <span class="progress" [style.color]="'#135812'">70%</span>
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-bar" [style.width.%]="70" [style.background]="'#135812'">
+                                    </div>
+                                </div>
+                                <div class="part">
+                                    <span class="gray-text">$700.000 de $1'000.000</span>
+                                    <span class="gray-text">Faltan $300.000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <div class="card card-summary">
+                    <div class="card-header">
+                        <h3>Resumen de Metas</h3>
+                    </div>
+                    <div class="card-content">
+                        <div class="chart">
+                            <app-chart-doughnut [data]="dataSets" [labels]="chartLabels"></app-chart-doughnut>
+                        </div>
+                        <div class="details-chart">
+                            <div class="partition">
+                                <div class="left">
+                                    <span class="point"></span>
+                                    <span class="name">Viaje a Europa</span>
+                                </div>
+                                <span class="percent">48%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="info" [style.width.%]="93">
+                        <i class="fa-solid fa-chart-simple"></i>
+                        <p>¡Vas por buen camino!, Has ahorrado el 43% del total de tus metas</p>
+                    </div>
+                </div>
+                <div class="card next">
+                    <div class="card-header">
+                        <h3>Próximos logros</h3>
+                    </div>
+                    <div class="goal">
+                        <div class="icon-goal" [style.background]="'#e8f3e5'">
+                            <i class="fa-solid fa-house" [style.color]="'#135812'"></i>
+                        </div>
+                        <div class="details-goal">
+                            <h4>Meta 1</h4>
+                            <div class="info-goal">
+                                <div class="part">
+                                    <span class="gray-text">categoria</span>
+                                    <span class="progress" [style.color]="'#135812'">70%</span>
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-bar" [style.width.%]="70" [style.background]="'#135812'">
+                                    </div>
+                                </div>
+                                <div class="part">
+                                    <span class="gray-text">$700.000 de $1'000.000</span>
+                                    <span class="gray-text">Faltan $300.000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

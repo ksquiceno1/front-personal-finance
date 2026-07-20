@@ -24,7 +24,11 @@ export const routes: Routes = [{
         {
             path: 'reports',
             loadComponent: () => import('./reports/reports').then(m => m.Reports)
+        },
+        {
+            path: 'goals',
+            loadComponent: () => import('./goals/goals').then(m => m.Goals)
         }
     ]
 },
-{path: '**', redirectTo: 'dashboard'}];
+{ path: '**', redirectTo: 'dashboard' }];

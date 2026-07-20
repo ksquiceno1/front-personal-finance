@@ -1,0 +1,327 @@
+@use '../../styles/variables.scss' as *;
+
+@mixin goalmix {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-xs $spacing-sm;
+
+    .icon-goal {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+
+        i {
+            font-size: 0.875rem;
+        }
+    }
+
+    .details-goal {
+        @include flex-column;
+        gap: $spacing-xs;
+        width: 80%;
+
+        h4 {
+            margin: 0;
+            font-size: 0.765rem;
+            font-weight: 600;
+            color: $text-green-dark;
+        }
+
+        .info-goal {
+            @include flex-column;
+            gap: $spacing-xs;
+
+            .part {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                .gray-text {
+                    font-size: 0.675rem;
+                    color: $text-secondary;
+                    font-weight: 400;
+                }
+
+                .progress {
+                    font-size: 1rem;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}
+
+@mixin flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+@mixin flex-column-md {
+    @include flex-column;
+    gap: $spacing-md;
+}
+
+@mixin header-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+        color: $text-green-dark;
+    }
+}
+
+.container {
+    width: 100%;
+    @include flex-column-md;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .title {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+
+        h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: $text-black;
+        }
+
+        .icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: $bg-green-icon;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            i {
+                font-size: 1.5rem;
+                color: $text-green;
+            }
+        }
+    }
+}
+
+.content {
+    @include flex-column-md;
+}
+
+.section-1 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing-sm;
+
+    .info-card {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+
+        .icon-sec {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            i {
+                font-size: 1.25rem;
+            }
+        }
+
+        .details {
+            @include flex-column;
+            gap: $spacing-xs;
+
+            h4 {
+                margin: 0;
+                font-size: 0.765rem;
+                font-weight: 600;
+                color: $text-green;
+            }
+
+            .amount {
+                font-size: 1rem;
+                font-weight: 600;
+            }
+
+            .description {
+                font-size: 0.765rem;
+                color: $text-secondary;
+                margin: 0;
+            }
+        }
+
+        &.green {
+            .icon-sec {
+
+                background-color: $bg-green-icon;
+
+                i {
+                    color: $text-green;
+                }
+            }
+
+            .details {
+
+                h4,
+                .amount {
+                    color: $text-green;
+                }
+            }
+        }
+
+        &.blue {
+            .icon-sec {
+                background-color: #e8eff7;
+
+                i {
+                    color: #1257af;
+                }
+            }
+
+            .details {
+
+                h4,
+                .amount {
+                    color: #1257af;
+                }
+            }
+        }
+
+        &.purple {
+            .icon-sec {
+
+                background-color: #ede5f7;
+
+                i {
+                    color: #8a2be2;
+                }
+            }
+
+            .details {
+
+                h4,
+                .amount {
+                    color: #8a2be2;
+                }
+            }
+        }
+    }
+}
+
+.section-2 {
+    display: flex;
+    gap: $spacing-md;
+
+    .ls-goals {
+        flex: 60% 0;
+        @include flex-column-md;
+        height: 100%;
+
+        .card-header {
+            @include header-card;
+        }
+
+        .content-ls {
+            @include flex-column;
+            gap: $spacing-sm;
+
+            .goal {
+                @include goalmix;
+                border-bottom: 0.8px solid $text-secondary;
+            }
+        }
+    }
+
+    .right {
+        @include flex-column;
+
+        .card-summary {
+            flex: 1;
+            position: relative;
+            padding-bottom: 80px;
+            @include flex-column-md;
+
+            .card-header {
+                @include header-card;
+            }
+
+            .card-content {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: $spacing-md;
+
+                .chart {
+                    width: 100%;
+                    max-width: 200px;
+                }
+
+                .details-chart {
+                    @include flex-column;
+                    gap: $spacing-sm;
+                    width: 100%;
+
+                    .partition {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+
+                        .left {
+                            display: flex;
+                            align-items: center;
+                            gap: $spacing-sm;
+
+                            .point {
+                                width: 20px;
+                                height: 20px;
+                                border-radius: 50%;
+                            }
+
+                            .name {
+                                font-size: 0.875rem;
+                                color: $text-green-dark;
+                            }
+                        }
+
+
+                        .percent {
+                            font-size: 0.875rem;
+                            color: $text-secondary;
+                        }
+                    }
+                }
+            }
+        }
+
+        .next {
+            @include flex-column-md;
+
+            .card-header {
+                @include header-card;
+            }
+
+            .goal {
+                @include goalmix;
+            }
+        }
+    }
+
+}
