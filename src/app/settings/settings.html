@@ -1,0 +1,222 @@
+<div class="container">
+    <div class="header">
+        <div class="title">
+            <div class="icon">
+                <i class="fa-solid fa-user"></i>
+            </div>
+            <h1>Configuración</h1>
+        </div>
+        <div class="card account">
+            <div class="icon">
+                <i class="fa-solid fa-user"></i>
+            </div>
+            <div class="info-user">
+                <span class="name">Usuario</span>
+                <span class="email">usuario@mail.com</span>
+            </div>
+            <i class="fa-solid fa-angle-right"></i>
+        </div>
+    </div>
+    <div class="content">
+        <div class="section-1">
+            <div class="card info-card">
+                <div class="icon-sec" [style.background-color]="'#e8f1e5'">
+                    <i class="fa-solid fa-user" [style.color]="'#0A9605'"></i>
+                </div>
+                <div class="details">
+                    <span class="subtitle" [style.color]="'#0A9605'">Perfil</span>
+                    <span class="actual" [style.color]="'#0A9605'">Completo</span>
+                    <span class="extra">Tu perfil está actualizado</span>
+                </div>
+            </div>
+            <div class="card info-card">
+                <div class="icon-sec" [style.background-color]="'#ebf1f9'">
+                    <i class="fa-solid fa-circle-dollar-to-slot" [style.color]="'#1850b7'"></i>
+                </div>
+                <div class="details">
+                    <span class="subtitle" [style.color]="'#1850b7'">Moneda</span>
+                    <span class="actual" [style.color]="'#1850b7'">COP</span>
+                    <span class="extra">Peso colombiano</span>
+                </div>
+            </div>
+            <div class="card info-card">
+                <div class="icon-sec" [style.background-color]="'#efe7f9'">
+                    <i class="fa-solid fa-moon" [style.color]="'#7126c1'"></i>
+                </div>
+                <div class="details">
+                    <span class="subtitle" [style.color]="'#7126c1'">Tema</span>
+                    <span class="actual" [style.color]="'#7126c1'">Oscuro</span>
+                    <span class="extra">Tema actual de la app</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navegación Perfil -->
+        <div class="card section-nav">
+            <div class="head-nav">
+                <div class="icon-nav">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <h3>Cuenta</h3>
+            </div>
+            <div class="nav">
+                <a routerLink="/settings/profile" routerLinkActive="active">
+                    <div class="start">
+                        <div class="icon-sec">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <span class="data-sec">
+                            <span class="name-section">Editar Perfil</span>
+                            <span class="extra">Actualizar información de tu perfil</span>
+                        </span>
+                    </div>
+                    <i class="fa-solid fa-angle-right"></i>
+                </a>
+                <a routerLink="/settings/security" routerLinkActive="active">
+                    <div class="start">
+                        <div class="icon-sec">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                        <span class="data-sec">
+                            <span class="name-section">Cambiar Contraseña</span>
+                            <span class="extra">Mantén tu cuenta segura</span>
+                        </span>
+                    </div>
+                    <i class="fa-solid fa-angle-right"></i>
+                </a>
+                <a routerLink="/settings/security" routerLinkActive="active">
+                    <div class="start">
+                        <div class="icon-sec">
+                            <i class="fa-solid fa-arrow-right-from-bracket" [style.color]="'#c40b0e'"></i>
+                        </div>
+                        <span class="data-sec">
+                            <span class="name-section">Cerrar Sesión</span>
+                            <span class="extra">Cierra tu sesión actual</span>
+                        </span>
+                    </div>
+                    <i class="fa-solid fa-angle-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Navegación Preferencias -->
+        <div class="card section-nav">
+            <div class="head-nav">
+                <div class="icon-nav">
+                    <i class="fa-solid fa-filter"></i>
+                </div>
+                <h3>Preferencias</h3>
+            </div>
+            <div class="nav">
+                <a routerLink="/settings/profile" routerLinkActive="active">
+                    <div class="start">
+                        <div class="icon-sec">
+                            <i class="fa-solid fa-circle-dollar-to-slot"></i>
+                        </div>
+                        <span class="data-sec">
+                            <span class="name-section">Moneda y Formato</span>
+                            <span class="extra">Configura tu moneda y formato de números</span>
+                        </span>
+                    </div>
+                    <i class="fa-solid fa-angle-right"></i>
+                </a>
+                <a routerLink="/settings/security" routerLinkActive="active">
+                    <div class="start">
+                        <div class="icon-sec">
+                            <i class="fa-solid fa-moon"></i>
+                        </div>
+                        <span class="data-sec">
+                            <span class="name-section">Tema de la aplicación</span>
+                            <span class="extra">Elige entre tema oscuro, claro o automático</span>
+                        </span>
+                    </div>
+                    <i class="fa-solid fa-angle-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Navegación Datos -->
+        <div class="card section-nav">
+            <div class="head-nav">
+                <div class="icon-nav">
+                    <i class="fa-solid fa-database"></i>
+                </div>
+                <h3>Datos</h3>
+            </div>
+            <div class="nav">
+                <a routerLink="/settings/profile" routerLinkActive="active">
+                    <div class="start">
+                        <div class="icon-sec">
+                            <i class="fa-solid fa-download"></i>
+                        </div>
+                        <span class="data-sec">
+                            <span class="name-section">Exportar mis Datos</span>
+                            <span class="extra">Descarga tu información en formato CSV</span>
+                        </span>
+                    </div>
+                    <i class="fa-solid fa-angle-right"></i>
+                </a>
+                <a routerLink="/settings/security" routerLinkActive="active">
+                    <div class="start">
+                        <div class="icon-sec">
+                            <i class="fa-solid fa-trash" [style.color]="'#c40b0e'"></i>
+                        </div>
+                        <span class="data-sec">
+                            <span class="name-section">Eliminar todos los datos</span>
+                            <span class="extra">Borra toda tu información de la aplicación</span>
+                        </span>
+                    </div>
+                    <i class="fa-solid fa-angle-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Navegación Información -->
+        <div class="card section-nav">
+            <div class="head-nav">
+                <div class="icon-nav">
+                    <i class="fa-solid fa-info-circle"></i>
+                </div>
+                <h3>Acerca de</h3>
+            </div>
+            <div class="nav">
+                <a routerLink="/settings/profile" routerLinkActive="active">
+                    <div class="start">
+                        <div class="icon-sec">
+                            <i class="fa-regular fa-circle-question"></i>
+                        </div>
+                        <span class="data-sec">
+                            <span class="name-section">Ayuda y Soporte</span>
+                            <span class="extra">Obtén ayuda o contáctanos</span>
+                        </span>
+                    </div>
+                    <i class="fa-solid fa-angle-right"></i>
+                </a>
+                <a routerLink="/settings/security" routerLinkActive="active">
+                    <div class="start">
+                        <div class="icon-sec">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </div>
+                        <span class="data-sec">
+                            <span class="name-section">Versión de la app</span>
+                            <span class="extra">Versión 1.0.0</span>
+                        </span>
+                    </div>
+                    <i class="fa-solid fa-angle-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="card logout">
+            <a routerLink="/" routerLinkActive="active">
+                <div class="icon-sec">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </div>
+                <span class="data-sec">
+                    <span class="subtitle">Cerrar Sesión</span>
+                    <span>Salir de tu cuenta actual</span>
+                </span>
+            </a>
+        </div>
+    </div>
+</div>

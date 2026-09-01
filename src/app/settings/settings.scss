@@ -1,0 +1,285 @@
+@use '../../styles/variables.scss' as *;
+
+@mixin flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+@mixin flex-column-md {
+    @include flex-column;
+    gap: $spacing-md;
+}
+
+.container {
+    width: 100%;
+    @include flex-column-md;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .title {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+
+        h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: $text-black;
+        }
+
+        .icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: $bg-green-icon;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            i {
+                font-size: 1.5rem;
+                color: $text-green;
+            }
+        }
+    }
+
+    .account {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+
+        .icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: $bg-green-icon;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            i {
+                font-size: 1.2rem;
+                color: $text-green;
+            }
+        }
+
+        .info-user {
+            display: flex;
+            flex-direction: column;
+            gap: $spacing-xs;
+
+            .name {
+                font-size: 1rem;
+                font-weight: 500;
+                color: $text-green-dark;
+            }
+
+            .email {
+                font-size: 0.9rem;
+                color: $text-secondary;
+            }
+        }
+    }
+
+    i {
+        font-size: 1.2rem;
+        color: $text-green;
+    }
+}
+
+.content {
+    @include flex-column-md;
+
+    .section-1 {
+        display: flex;
+        align-items: center;
+        gap: $spacing-md;
+
+        .info-card {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: $spacing-sm;
+
+            .icon-sec {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+
+                i {
+                    font-size: 1.25rem;
+                }
+            }
+
+            .details {
+                display: flex;
+                flex-direction: column;
+                gap: $spacing-xs;
+
+                .subtitle {
+                    font-size: 0.765rem;
+                    font-weight: 600;
+                }
+
+                .actual {
+                    font-size: 1.25rem;
+                    font-weight: 600;
+                }
+
+                .extra {
+                    font-size: 0.685rem;
+                    color: $text-secondary;
+                }
+            }
+        }
+    }
+
+    .section-nav {
+        @include flex-column-md;
+
+        .head-nav {
+            display: flex;
+            align-items: center;
+            gap: $spacing-sm;
+
+            .icon-nav {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 50px;
+                height: 50px;
+                border-radius: 10px;
+                background-color: $bg-green-icon;
+
+                i {
+                    font-size: 1.25rem;
+                    color: $text-green;
+                }
+            }
+
+            h3 {
+                margin: 0;
+                font-size: 1rem;
+                font-weight: 600;
+                color: $text-green-dark;
+            }
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: $spacing-xs;
+
+            a {
+                text-decoration: none;
+                padding: $spacing-xs $spacing-sm;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border-radius: 5px;
+
+                .start {
+                    display: flex;
+                    align-items: center;
+                    gap: $spacing-sm;
+
+                    .icon-sec {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 40px;
+                        height: 40px;
+
+                        i {
+                            font-size: 1.2rem;
+                            color: $text-green;
+                        }
+                    }
+
+                    .data-sec {
+                        display: flex;
+                        flex-direction: column;
+                        gap: $spacing-xs;
+
+                        .name-section {
+                            font-size: 0.865rem;
+                            font-weight: 600;
+                            color: $text-green-dark;
+                        }
+                        
+                        .extra {
+                            font-size: 0.685rem;
+                            color: $text-secondary;
+                        }
+                    }
+
+                }
+
+                i {
+                    font-size: 1rem;
+                    color: $text-secondary;
+                }
+
+                &.line {
+                    border-bottom: 1px solid $border-color;
+                }
+
+                &.active {
+                    background-color: $bg-green-icon;
+                    color: $text-green-dark;
+                    font-weight: 600;
+                }
+
+                &:hover {
+                    background-color: $bg-green-icon;
+                    color: $text-green-dark;
+                }
+            }
+        }
+    }
+
+    .logout {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        a {
+            text-decoration: none;
+            padding: $spacing-sm $spacing-md;
+            display: flex;
+            align-items: center;
+            gap: $spacing-sm;
+            border-radius: 5px;
+
+            i {
+                font-size: 1.2rem;
+                color: $text-red;
+            }
+
+            .data-sec {
+                display: flex;
+                flex-direction: column;
+                gap: $spacing-xs;
+
+                .subtitle {
+                    font-size: 0.865rem;
+                    font-weight: 600;
+                    color: $text-red;
+                }
+
+                span {
+                    font-size: 0.685rem;
+                    color: $text-secondary;
+                }
+            }
+        }
+    }
+}
