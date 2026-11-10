@@ -1,0 +1,118 @@
+@use '../../styles/variables.scss' as *;
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-md;
+  background:
+    radial-gradient(circle at top left, rgba($primary-100, 0.8), transparent 38%),
+    $background-color;
+}
+
+.auth-card {
+  width: min(100%, 440px);
+  padding: $spacing-xl;
+  margin: 0;
+  box-shadow: $shadow-lg;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-xl;
+
+  .brand-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: $bg-green-icon;
+    color: $text-green;
+  }
+
+  .brand-name {
+    color: $text-green-dark;
+    font-size: 1.1rem;
+  }
+}
+
+.auth-heading {
+  margin-bottom: $spacing-lg;
+  text-align: center;
+
+  h1 {
+    margin: 0 0 $spacing-xs;
+    color: $text-green-dark;
+    font-size: 1.5rem;
+  }
+
+  p {
+    margin: 0;
+    color: $text-secondary;
+    font-size: 0.9rem;
+  }
+}
+
+.auth-tabs {
+  display: flex;
+  gap: $spacing-xs;
+  padding: $spacing-xs;
+  margin-bottom: $spacing-lg;
+  border-radius: $border-radius-md;
+  background: $background-color;
+
+  a {
+    flex: 1;
+    padding: $spacing-sm;
+    border-radius: $border-radius-sm;
+    color: $text-secondary;
+    font-size: 0.875rem;
+    text-align: center;
+    text-decoration: none;
+
+    &.active {
+      background: $card-background;
+      box-shadow: $shadow-sm;
+      color: $text-green-dark;
+      font-weight: 600;
+    }
+  }
+}
+
+.auth-submit {
+  width: 100%;
+  margin-top: $spacing-sm;
+}
+
+.validation-message {
+  color: $text-red;
+  font-size: 0.8rem;
+}
+
+.status-message {
+  padding: $spacing-sm;
+  border-radius: $border-radius-sm;
+  background: $bg-green-icon;
+  color: $text-green-dark;
+  font-size: 0.875rem;
+}
+
+.error-message {
+  padding: $spacing-sm;
+  border-radius: $border-radius-sm;
+  background: $bg-red-icon;
+  color: $text-red;
+  font-size: 0.875rem;
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .auth-card {
+    padding: $spacing-lg;
+  }
+}

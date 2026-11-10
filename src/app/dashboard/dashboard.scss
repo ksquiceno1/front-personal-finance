@@ -36,6 +36,18 @@
             font-size: 1rem;
             color: #666;
         }
+
+        .user-load-error {
+            color: $text-red;
+            font-size: 0.875rem;
+        }
+    }
+
+    .header-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: $spacing-sm;
     }
 }
 

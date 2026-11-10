@@ -1,0 +1,124 @@
+<main class="auth-page">
+  <section class="card auth-card" aria-labelledby="auth-title">
+    <div class="brand">
+      <span class="brand-icon" aria-hidden="true">
+        <i class="fa-solid fa-wallet"></i>
+      </span>
+      <span class="brand-name">Finanzas <strong>Personales</strong></span>
+    </div>
+
+    <header class="auth-heading">
+      <h1 id="auth-title">{{ mode === 'login' ? 'Bienvenido de nuevo' : 'Crea tu cuenta' }}</h1>
+      <p>{{ mode === 'login' ? 'Ingresa a tu cuenta para continuar' : 'Regístrate para empezar a organizar tus finanzas' }}</p>
+    </header>
+
+    <nav class="auth-tabs" aria-label="Acceso a la cuenta">
+      <a routerLink="/login" [class.active]="mode === 'login'" [attr.aria-current]="mode === 'login' ? 'page' : null">
+        Iniciar sesión
+      </a>
+      <a routerLink="/register" [class.active]="mode === 'register'" [attr.aria-current]="mode === 'register' ? 'page' : null">
+        Crear cuenta
+      </a>
+    </nav>
+
+    <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)">
+      @if (mode === 'login') {
+        <div class="field-fr">
+          <label for="auth-username">Nombre de usuario</label>
+          <div class="input-fr">
+            <input
+              id="auth-username"
+              type="text"
+              name="username"
+              [(ngModel)]="credentials.username"
+              placeholder="Tu nombre de usuario"
+              autocomplete="username"
+              required
+            >
+          </div>
+        </div>
+      } @else {
+        <div class="field-fr">
+          <label for="auth-username">Nombre de usuario</label>
+          <div class="input-fr">
+            <input
+              id="auth-username"
+              type="text"
+              name="username"
+              [(ngModel)]="credentials.username"
+              placeholder="Tu nombre de usuario"
+              autocomplete="username"
+              maxlength="100"
+              required
+            >
+          </div>
+        </div>
+        <div class="field-fr">
+          <label for="auth-email">Correo electrónico</label>
+          <div class="input-fr">
+            <input
+              id="auth-email"
+              type="email"
+              name="email"
+              [(ngModel)]="credentials.email"
+              placeholder="nombre@correo.com"
+              autocomplete="email"
+              required
+            >
+          </div>
+        </div>
+      }
+
+      <div class="field-fr">
+        <label for="auth-password">Contraseña</label>
+        <div class="input-fr">
+          <input
+            id="auth-password"
+            type="password"
+            name="password"
+            [(ngModel)]="credentials.password"
+            placeholder="Ingresa tu contraseña"
+            [attr.autocomplete]="mode === 'login' ? 'current-password' : 'new-password'"
+            [minlength]="mode === 'register' ? 8 : null"
+            required
+          >
+        </div>
+      </div>
+
+      @if (mode === 'register') {
+        <div class="field-fr">
+          <label for="auth-confirm-password">Confirmar contraseña</label>
+          <div class="input-fr">
+            <input
+              id="auth-confirm-password"
+              type="password"
+              name="confirmPassword"
+              [(ngModel)]="credentials.confirmPassword"
+              placeholder="Repite tu contraseña"
+              autocomplete="new-password"
+              required
+            >
+          </div>
+          @if (passwordsDoNotMatch) {
+            <span class="validation-message">Las contraseñas no coinciden.</span>
+          }
+        </div>
+      }
+
+      @if (statusMessage) {
+        <p class="status-message" role="status">{{ statusMessage }}</p>
+      }
+      @if (errorMessage) {
+        <p class="error-message" role="alert">{{ errorMessage }}</p>
+      }
+
+      <button
+        class="button-primary auth-submit"
+        type="submit"
+        [disabled]="authForm.invalid || passwordsDoNotMatch || isSubmitting"
+      >
+        {{ isSubmitting ? 'Procesando...' : mode === 'login' ? 'Iniciar sesión' : 'Crear cuenta' }}
+      </button>
+    </form>
+  </section>
+</main>

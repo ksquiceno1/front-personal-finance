@@ -37,6 +37,10 @@
     align-items: center;
     gap: $spacing-sm;
 
+    .add-transaction-button {
+        margin-left: auto;
+    }
+
     h1 {
         margin: 0;
         font-size: 1.5rem;

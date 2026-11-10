@@ -1,13 +1,36 @@
+@if (showTransactionModal) {
+    <app-form-transaction
+        (closed)="closeTransactionModal()"
+        (save)="closeTransactionModal()"
+    />
+}
 <div class="container">
     <div class="header">
         <div class="title">
-            <h2>¡Hola, {{nombre}}!</h2>
+            <h2>
+                @if (username && !isLoadingUser) {
+                    ¡Hola, {{username}}!
+                } @else if (!username && isLoadingUser) {
+                    Cargando usuario...
+                } @else {
+                    Usuario no disponible
+                }
+            </h2>
             <span>Resumen de tus finanzas</span>
+            @if (userLoadError) {
+                <span class="user-load-error" role="alert">{{userLoadError}}</span>
+            }
         </div>
-        <div class="date-picker-container">
-            <i class="fa-regular fa-calendar"></i>
-            <input #nativeDatePicker type="date" [(ngModel)]="date" class="native-date-picker">
-            <input type="text" [value]="formattedDate" readonly class="date-picker" (focus)="nativeDatePicker.showPicker()">
+        <div class="header-actions">
+            <button type="button" class="button-primary" (click)="showTransactionModal = true">
+                <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                Agregar transacción
+            </button>
+            <div class="date-picker-container">
+                <i class="fa-regular fa-calendar"></i>
+                <input #nativeDatePicker type="date" [(ngModel)]="date" class="native-date-picker">
+                <input type="text" [value]="formattedDate" readonly class="date-picker" (focus)="nativeDatePicker.showPicker()">
+            </div>
         </div>
     </div>
     <div class="content">

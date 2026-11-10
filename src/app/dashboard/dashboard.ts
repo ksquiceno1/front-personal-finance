@@ -1,16 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChartBarComponent } from '../shared/components/chart-bar/chart-bar.component';
+import { FormTransactionComponent } from '../shared/components/form-transaction/form-transaction.component';
+import { AuthService } from '../shared/services/auth.service';
 import { ChartDataset } from 'chart.js';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, FormsModule, ChartBarComponent],
+  imports: [CommonModule, FormsModule, ChartBarComponent, FormTransactionComponent],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
-export class Dashboard {
+export class Dashboard implements OnInit {
+  private readonly authService = inject(AuthService);
+
   // Chart data for the bar chart
   incomeData: number[] = [1500000, 1200000, 1800000];
   expensesData: number[] = [80000, 480000, 400000];
@@ -31,8 +35,11 @@ export class Dashboard {
   chartLabels: string[] = ['Abril', 'Mayo', 'Junio'];
 
   select: string = 'Mensual';
+  showTransactionModal = false;
 
-  nombre: string = 'Usuario';
+  username = '';
+  userLoadError = '';
+  isLoadingUser = true;
   date: string = new Date().toISOString().split('T')[0];
   income: number = 600000;
   expenses: number = 230000;
@@ -61,7 +68,28 @@ export class Dashboard {
     }
   ]
 
+  ngOnInit(): void {
+    this.authService.getCurrentUser().subscribe({
+      next: (user) => {
+        this.username = user.username;
+      },
+      error: (error: unknown) => {
+        this.userLoadError = error instanceof Error
+          ? error.message
+          : 'No se pudo cargar la información del usuario.';
+        this.isLoadingUser = false;
+      },
+      complete: () => {
+        this.isLoadingUser = false;
+      },
+    });
+  }
+
   get balance(): number {
     return this.income - this.expenses;
+  }
+
+  closeTransactionModal(): void {
+    this.showTransactionModal = false;
   }
 }
