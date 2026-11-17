@@ -44,11 +44,41 @@
                     <div class="side">
                         <div class="card-header income">
                             <h3>Ingresos</h3>
-                            <span>{{income | currency}}</span>
+                            <span>
+                                @if (income !== null) {
+                                    {{income | currency}}
+                                } @else if (isLoadingBalance) {
+                                    Cargando...
+                                } @else {
+                                    —
+                                }
+                            </span>
                         </div>
                         <div class="card-body">
-                            <i class="fa-solid fa-arrow-trend-up income"></i>
-                            <p><span class="income">+12%</span> vs Mes anterior</p>
+                            <p>
+                                @if (incomeComparison) {
+                                    <span
+                                        class="comparison"
+                                        [class.positive]="incomeComparison.direction === 'up'"
+                                        [class.negative]="incomeComparison.direction === 'down'"
+                                        [class.unchanged]="incomeComparison.direction === 'unchanged'"
+                                    >
+                                        <i
+                                            class="fa-solid"
+                                            [class.fa-arrow-trend-up]="incomeComparison.direction === 'up'"
+                                            [class.fa-arrow-trend-down]="incomeComparison.direction === 'down'"
+                                            [class.fa-minus]="incomeComparison.direction === 'unchanged'"
+                                            aria-hidden="true"
+                                        ></i>
+                                        {{formatComparison(incomeComparison)}}
+                                    </span>
+                                    <span>vs mes anterior</span>
+                                } @else if (isLoadingBalance) {
+                                    Comparando...
+                                } @else {
+                                    Comparación no disponible
+                                }
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -59,11 +89,41 @@
                     <div class="side">
                         <div class="card-header expense">
                             <h3>Gastos</h3>
-                            <span>{{expenses | currency}}</span>
+                            <span>
+                                @if (expenses !== null) {
+                                    {{expenses | currency}}
+                                } @else if (isLoadingBalance) {
+                                    Cargando...
+                                } @else {
+                                    —
+                                }
+                            </span>
                         </div>
                         <div class="card-body">
-                            <i class="fa-solid fa-arrow-trend-down expense"></i>
-                            <p><span class="expense">-8%</span> vs Mes anterior</p>
+                            <p>
+                                @if (expenseComparison) {
+                                    <span
+                                        class="comparison"
+                                        [class.negative]="expenseComparison.direction === 'up'"
+                                        [class.positive]="expenseComparison.direction === 'down'"
+                                        [class.unchanged]="expenseComparison.direction === 'unchanged'"
+                                    >
+                                        <i
+                                            class="fa-solid"
+                                            [class.fa-arrow-trend-up]="expenseComparison.direction === 'up'"
+                                            [class.fa-arrow-trend-down]="expenseComparison.direction === 'down'"
+                                            [class.fa-minus]="expenseComparison.direction === 'unchanged'"
+                                            aria-hidden="true"
+                                        ></i>
+                                        {{formatComparison(expenseComparison)}}
+                                    </span>
+                                    <span>vs mes anterior</span>
+                                } @else if (isLoadingBalance) {
+                                    Comparando...
+                                } @else {
+                                    Comparación no disponible
+                                }
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -73,26 +133,48 @@
                     <h3>Saldo Disponible</h3>
                 </div>
                 <div class="card-body">
-                    <span>{{balance | currency}}</span>
+                    <span>
+                        @if (balance !== null) {
+                            {{balance | currency}}
+                        } @else if (isLoadingBalance) {
+                            Cargando...
+                        } @else {
+                            —
+                        }
+                    </span>
                     <p>Este es tu saldo disponible actual.</p>
                 </div>
             </div>
         </div>
+        @if (balanceLoadError) {
+            <p class="balance-load-error" role="alert">{{balanceLoadError}}</p>
+        }
 
         <!-- Sección 2: Gráfico de distribución de gastos y categorías -->
         <div class="section-2">
             <div class="card chart-card">
                 <div class="chart-header">
-                    <h3>Resumen {{select}}</h3>
-                    <select [(ngModel)]="select" class="selector">
-                        <option value="Mensual">Mensual</option>
-                        <option value="Trimestral">Trimestral</option>
-                        <option value="Anual">Anual</option>
+                    <h3>Resumen</h3>
+                    <select
+                        [ngModel]="chartPeriod"
+                        (ngModelChange)="loadChart($event)"
+                        class="selector"
+                        aria-label="Periodo del gráfico"
+                        [disabled]="isLoadingChart"
+                    >
+                        <option value="months">Últimos 3 meses</option>
+                        <option value="quarters">Últimos 9 meses</option>
+                        <option value="years">Últimos 36 meses</option>
                     </select>
                 </div>
                 <div class="chart-body">
-                    <!-- Aquí iría un gráfico de barras -->
-                    <app-chart-bar [data]="dataSets" [labels]="chartLabels" />
+                    @if (isLoadingChart) {
+                        <p>Cargando gráfico...</p>
+                    } @else if (chartLoadError) {
+                        <p role="alert">{{chartLoadError}}</p>
+                    } @else {
+                        <app-chart-bar [data]="dataSets" [labels]="chartLabels" />
+                    }
                 </div>
             </div>
             <div class="card categories-card">
@@ -101,22 +183,31 @@
                     <a href="/categories">Ver todas</a>
                 </div>
                 <div class="categories-body">
-                    <div class="category">
-                        <div class="category-icon">
-                            <i class="fa-regular fa-house"></i>
-                        </div>
-                        <div class="category-details">
-                            <div class="category-header">
-                                <span class="category-name">Hogar</span>
-                                <span class="category-percentage">85%</span>
-                            </div>
-                            <span class="category-amount">$994090</span>
-                            <div class="progress-container">
-                                <div class="progress-bar" [style.width.%]="85">
+                    @if (isLoadingCategories) {
+                        <p>Cargando categorías...</p>
+                    } @else if (categoriesLoadError) {
+                        <p role="alert">{{categoriesLoadError}}</p>
+                    } @else if (topCategories.length > 0) {
+                        @for (category of topCategories; track $index) {
+                            <div class="category">
+                                <div class="category-icon">
+                                    <i [class]="getCategoryIconClass(category.icon)" aria-hidden="true"></i>
+                                </div>
+                                <div class="category-details">
+                                    <div class="category-header">
+                                        <span class="category-name">{{category.categoryName}}</span>
+                                        <span class="category-percentage">{{category.percentage | number:'1.0-2'}}%</span>
+                                    </div>
+                                    <span class="category-amount">{{category.totalAmount | currency}}</span>
+                                    <div class="progress-container">
+                                        <div class="progress-bar" [style.width.%]="category.percentage"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        }
+                    } @else {
+                        <p>No hay gastos registrados este mes.</p>
+                    }
                 </div>
             </div>
         </div>
@@ -129,16 +220,21 @@
                     <a href="/transactions">Ver todas</a>
                 </div>
                 <div class="transactions-body">
-                    @for(transaction of transactions; track transaction.name;) {
+                    @if (isLoadingTransactions) {
+                        <p>Cargando transacciones...</p>
+                    } @else if (transactionsLoadError) {
+                        <p role="alert">{{transactionsLoadError}}</p>
+                    } @else if (transactions.length > 0) {
+                    @for(transaction of transactions; track $index) {
                         <div class="transaction">
                             <div class="transaction-icon" [class.bg-expense]="transaction.type === 'expense'" [class.bg-income]="transaction.type === 'income'">
-                                <i class="{{transaction.icon}}"></i>
+                                <i [class]="getCategoryIconClass(transaction.iconCategory)" aria-hidden="true"></i>
                             </div>
                             <div class="transaction-details">
                                 <div class="transaction-info">
-                                    <span class="transaction-name">{{transaction.name}}</span>
+                                    <span class="transaction-name">{{transaction.description || 'Sin descripción'}}</span>
                                     <span class="transaction-amount" [class.expense]="transaction.type === 'expense'" [class.income]="transaction.type === 'income'">
-                                        {{transaction.type === 'expense' ? '-' : ''}}${{transaction.amount | number}}
+                                        {{transaction.type === 'expense' ? '-' : ''}}{{transaction.amount | currency}}
                                     </span>
                                 </div>
                                 <div class="transaction-date-container">
@@ -149,6 +245,9 @@
                                 </div>
                             </div>
                         </div>
+                    }
+                    } @else {
+                        <p>No hay transacciones recientes.</p>
                     }
                 </div>
             </div>

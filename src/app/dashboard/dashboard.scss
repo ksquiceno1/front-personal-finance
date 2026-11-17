@@ -126,6 +126,23 @@
                         margin: 0;
                         font-size: 0.75rem;
                         color: $text-secondary;
+
+                        .comparison {
+                            margin-right: $spacing-xs;
+                            font-weight: 600;
+
+                            &.positive {
+                                color: $text-green;
+                            }
+
+                            &.negative {
+                                color: $text-red;
+                            }
+
+                            &.unchanged {
+                                color: $text-secondary;
+                            }
+                        }
                     }
                 }
 
@@ -178,6 +195,13 @@
             }
         }
     }
+}
+
+.balance-load-error {
+    width: 100%;
+    margin: 0;
+    color: $text-red;
+    font-size: 0.875rem;
 }
 
 .section-2 {

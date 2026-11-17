@@ -178,13 +178,20 @@
             flex-direction: column;
             gap: $spacing-xs;
 
-            a {
+            a,
+            .logout-nav-button {
+                width: 100%;
+                border: 0;
+                background: transparent;
+                font: inherit;
+                text-align: left;
                 text-decoration: none;
                 padding: $spacing-xs $spacing-sm;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 border-radius: 5px;
+                cursor: pointer;
 
                 .start {
                     display: flex;
@@ -242,6 +249,11 @@
                     background-color: $bg-green-icon;
                     color: $text-green-dark;
                 }
+
+                &:disabled {
+                    cursor: wait;
+                    opacity: 0.7;
+                }
             }
         }
     }
@@ -251,13 +263,20 @@
         align-items: center;
         justify-content: center;
 
-        a {
+        button {
+            width: 100%;
+            border: 0;
+            background: transparent;
+            color: inherit;
+            font: inherit;
+            text-align: left;
             text-decoration: none;
             padding: $spacing-sm $spacing-md;
             display: flex;
             align-items: center;
             gap: $spacing-sm;
             border-radius: 5px;
+            cursor: pointer;
 
             i {
                 font-size: 1.2rem;
@@ -280,6 +299,21 @@
                     color: $text-secondary;
                 }
             }
+
+            &:hover {
+                background-color: $bg-red-icon;
+            }
+
+            &:disabled {
+                cursor: wait;
+                opacity: 0.7;
+            }
         }
     }
+}
+
+.logout-error {
+    margin: 0;
+    color: $text-red;
+    font-size: 0.875rem;
 }

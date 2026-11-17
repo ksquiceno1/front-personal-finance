@@ -1,4 +1,4 @@
-import { Component, ElementRef, input, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, ElementRef, input, OnChanges, OnDestroy, ViewChild } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import {
     Chart,
@@ -20,15 +20,32 @@ Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Too
     templateUrl: './chart-bar.component.html',
     styleUrl: './chart-bar.component.scss',
 })
-export class ChartBarComponent {
+export class ChartBarComponent implements AfterViewInit, OnChanges, OnDestroy {
     @ViewChild('chart') chartRef!: ElementRef<HTMLCanvasElement>;
 
     public readonly data = input.required<ChartDataset[]>();
     public readonly labels = input.required<string[]>();
     public readonly orientation = input<'vertical' | 'horizontal'>('vertical');
+    private chart?: Chart;
 
-    ngAfterViewInit() {
-        new Chart(this.chartRef.nativeElement, this.buildChartConfig(this.labels(), this.data(), this.orientation()));
+    ngAfterViewInit(): void {
+        this.chart = new Chart(
+            this.chartRef.nativeElement,
+            this.buildChartConfig(this.labels(), this.data(), this.orientation()),
+        );
+    }
+
+    ngOnChanges(): void {
+        if (this.chart) {
+            this.chart.data.labels = this.labels();
+            this.chart.data.datasets = this.data();
+            this.chart.options.indexAxis = this.orientation() === 'horizontal' ? 'y' : 'x';
+            this.chart.update();
+        }
+    }
+
+    ngOnDestroy(): void {
+        this.chart?.destroy();
     }
 
     protected buildChartConfig(labels: string[], data: ChartDataset[], orientation: 'vertical' | 'horizontal'): ChartConfiguration {

@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, catchError, tap, throwError } from 'rxjs';
+import { Observable, catchError, map, tap, throwError } from 'rxjs';
 
 export interface LoginCredentials {
   username: string;
@@ -36,8 +36,8 @@ export class AuthService {
   login(credentials: LoginCredentials): Observable<AuthTokens> {
     return this.http.post<AuthTokens>(`${this.apiUrl}/login/`, credentials).pipe(
       tap((tokens) => {
-        sessionStorage.setItem(this.accessTokenKey, tokens.access);
-        sessionStorage.setItem(this.refreshTokenKey, tokens.refresh);
+        localStorage.setItem(this.accessTokenKey, tokens.access);
+        localStorage.setItem(this.refreshTokenKey, tokens.refresh);
       }),
       catchError((error: unknown) => this.handleError(error)),
     );
@@ -64,8 +64,48 @@ export class AuthService {
     );
   }
 
+  logout(): Observable<void> {
+    const accessToken = this.getAccessToken();
+    const refreshToken = this.getStoredToken(this.refreshTokenKey);
+    if (!accessToken || !refreshToken) {
+      return throwError(() => new Error('No se encontraron los tokens de sesión.'));
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${accessToken}`,
+    });
+
+    return this.http.post(`${this.apiUrl}/logout/`, { refresh: refreshToken }, { headers }).pipe(
+      tap(() => this.clearTokens()),
+      map(() => undefined),
+      catchError((error: unknown) => this.handleError(error)),
+    );
+  }
+
   getAccessToken(): string | null {
-    return sessionStorage.getItem(this.accessTokenKey);
+    return this.getStoredToken(this.accessTokenKey);
+  }
+
+  private clearTokens(): void {
+    localStorage.removeItem(this.accessTokenKey);
+    localStorage.removeItem(this.refreshTokenKey);
+    sessionStorage.removeItem(this.accessTokenKey);
+    sessionStorage.removeItem(this.refreshTokenKey);
+  }
+
+  private getStoredToken(key: string): string | null {
+    const persistentToken = localStorage.getItem(key);
+    if (persistentToken) {
+      return persistentToken;
+    }
+
+    const sessionToken = sessionStorage.getItem(key);
+    if (sessionToken) {
+      localStorage.setItem(key, sessionToken);
+      sessionStorage.removeItem(key);
+    }
+
+    return sessionToken;
   }
 
   private handleError(error: unknown): Observable<never> {

@@ -84,7 +84,12 @@
                     </div>
                     <i class="fa-solid fa-angle-right"></i>
                 </a>
-                <a routerLink="/settings/security" routerLinkActive="active">
+                <button
+                    type="button"
+                    class="logout-nav-button"
+                    (click)="logout()"
+                    [disabled]="isLoggingOut"
+                >
                     <div class="start">
                         <div class="icon-sec">
                             <i class="fa-solid fa-arrow-right-from-bracket" [style.color]="'#c40b0e'"></i>
@@ -94,8 +99,8 @@
                             <span class="extra">Cierra tu sesión actual</span>
                         </span>
                     </div>
-                    <i class="fa-solid fa-angle-right"></i>
-                </a>
+                    <i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>
+                </button>
             </div>
         </div>
 
@@ -207,16 +212,19 @@
             </div>
         </div>
 
+        @if (logoutError) {
+            <p class="logout-error" role="alert">{{logoutError}}</p>
+        }
         <div class="card logout">
-            <a routerLink="/" routerLinkActive="active">
+            <button type="button" (click)="logout()" [disabled]="isLoggingOut">
                 <div class="icon-sec">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
                 </div>
                 <span class="data-sec">
                     <span class="subtitle">Cerrar Sesión</span>
-                    <span>Salir de tu cuenta actual</span>
+                    <span>{{isLoggingOut ? 'Cerrando sesión...' : 'Salir de tu cuenta actual'}}</span>
                 </span>
-            </a>
+            </button>
         </div>
     </div>
 </div>
