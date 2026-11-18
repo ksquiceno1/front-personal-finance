@@ -1,0 +1,47 @@
+<div
+  class="confirm-modal-backdrop"
+  role="presentation"
+  (click)="onBackdropClick($event)"
+  (keydown.escape)="cancel()"
+>
+  <section
+    class="card confirm-modal"
+    role="alertdialog"
+    aria-modal="true"
+    aria-labelledby="confirm-dialog-title"
+    aria-describedby="confirm-dialog-message"
+  >
+    <div class="confirm-modal-header">
+      <div class="confirm-modal-icon">
+        <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+      </div>
+      <h2 id="confirm-dialog-title">{{title}}</h2>
+    </div>
+    <p id="confirm-dialog-message">{{message}}</p>
+    @if (errorMessage) {
+      <p class="confirm-modal-error" role="alert">{{errorMessage}}</p>
+    }
+    <div class="confirm-modal-actions">
+      <button
+        type="button"
+        class="button-outline"
+        autofocus
+        [disabled]="isConfirming"
+        (click)="cancel()"
+      >
+        Cancelar
+      </button>
+      <button
+        type="button"
+        class="button-primary confirm-modal-action"
+        [disabled]="isConfirming"
+        (click)="confirmed.emit()"
+      >
+        @if (isConfirming) {
+          <i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>
+        }
+        {{isConfirming ? 'Procesando...' : confirmLabel}}
+      </button>
+    </div>
+  </section>
+</div>

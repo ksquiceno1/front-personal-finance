@@ -98,5 +98,17 @@
         opacity: 0.6;
       }
     }
+
+    .form-error {
+      margin: 0;
+      color: $text-red;
+      font-size: 0.875rem;
+    }
+
+    div.form-error {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-xs;
+    }
   }
 }

@@ -10,117 +10,234 @@
         <div class="card ls-transactions">
             <div class="header-ls">
                 <h3>Historial de transacciones</h3>
-                <button class="button-primary">
+                <button type="button" class="button-primary" (click)="resetForm()">
                     <i class="fa-solid fa-plus"></i>
                     Agregar registro
                 </button>
             </div>
             <div class="body-ls">
-                <div class="transaction" [ngClass]="{'expense': true, 'income': false}">
-                    <div class="cat" [ngClass]="{'expense': true, 'income': false}">
-                        <i class="fa-regular fa-house"></i>
-                    </div>
-                    <div class="details">
-                        <div class="section">
-                            <span class="description">Arriendo</span>
-                            <span class="amount">-$610000</span>
-                        </div>
-                        <div class="section">
-                            <span class="date">05/06/2026</span>
-                            <span class="type">Egreso</span>
-                        </div>
-                    </div>
-                    <div class="menu-container">
-                        <button class="button-icon" (click)="showMenu = !showMenu">
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                        </button>
-                        @if(showMenu) {
-                            <div class="menu">
-                                <button class="item-menu">
-                                    <i class="fa-solid fa-pen" [style.color]="'#025ad2'"></i>
-                                    Editar
-                                </button>
-                                <button class="item-menu" [style.border]="'none'">
-                                    <i class="fa-solid fa-trash-can" [style.color]="'#c40b0e'"></i>
-                                    Eliminar
-                                </button>
+                <div class="transactions-scroll" (scroll)="onTransactionsScroll($event)">
+                    @if (transactions.length > 0) {
+                        @for (transaction of transactions; track transaction.id) {
+                            <div
+                                class="transaction"
+                                [ngClass]="transaction.type"
+                                (click)="editTransaction(transaction)"
+                                [attr.aria-label]="'Editar ' + (transaction.description || 'transacción')"
+                            >
+                                <div class="cat" [ngClass]="transaction.type">
+                                    <i [class]="getCategoryIconClass(transaction.iconCategory)" aria-hidden="true"></i>
+                                </div>
+                                <div class="details">
+                                    <div class="section">
+                                        <span class="description">{{transaction.description || 'Sin descripción'}}</span>
+                                        <span class="amount">
+                                            {{transaction.type === 'expense' ? '-' : '+'}}{{transaction.amount | currency}}
+                                        </span>
+                                    </div>
+                                    <div class="section">
+                                        <span class="date">{{transaction.date | date:'dd/MM/yyyy'}}</span>
+                                        <span class="type">{{transaction.type === 'expense' ? 'Egreso' : 'Ingreso'}}</span>
+                                    </div>
+                                </div>
+                                <div class="menu-container">
+                                    <button
+                                        type="button"
+                                        class="button-icon"
+                                        [attr.aria-label]="'Opciones para ' + (transaction.description || 'transacción')"
+                                        (click)="$event.stopPropagation(); toggleMenu(transaction.id)"
+                                    >
+                                        <i class="fa-solid fa-ellipsis-vertical" aria-hidden="true"></i>
+                                    </button>
+                                    @if (activeMenuTransactionId === transaction.id) {
+                                        <div class="menu">
+                                            <button
+                                                type="button"
+                                                class="item-menu"
+                                                (click)="$event.stopPropagation(); editTransaction(transaction)"
+                                            >
+                                                <i class="fa-solid fa-pen" [style.color]="'#025ad2'"></i>
+                                                Editar
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="item-menu"
+                                                [style.border]="'none'"
+                                                [disabled]="deletingTransactionId === transaction.id"
+                                                (click)="$event.stopPropagation(); requestDeleteConfirmation(transaction)"
+                                            >
+                                                <i class="fa-solid fa-trash-can" [style.color]="'#c40b0e'"></i>
+                                                Eliminar
+                                            </button>
+                                        </div>
+                                    }
+                                </div>
                             </div>
-                        }
-                    </div>
 
-                </div>
-                <div class="no-history">
-                    <p>No hay historial</p>
+                            @if (pendingDeleteTransaction; as transaction) {
+                                <app-confirm-dialog
+                                    title="Eliminar transacción"
+                                    [message]="'¿Seguro que deseas eliminar ' + (transaction.description || 'esta transacción') + '? Esta acción no se puede deshacer.'"
+                                    confirmLabel="Eliminar"
+                                    [errorMessage]="deleteError"
+                                    [isConfirming]="deletingTransactionId === transaction.id"
+                                    (confirmed)="confirmDeleteTransaction()"
+                                    (cancelled)="cancelDeleteConfirmation()"
+                                />
+                            }
+                        }
+                    } @else if (isLoading) {
+                        <div class="no-history"><p>Cargando transacciones...</p></div>
+                    } @else if (loadError) {
+                        <div class="no-history">
+                            <p role="alert">{{loadError}}</p>
+                            <button type="button" class="button-outline" (click)="loadTransactions()">Reintentar</button>
+                        </div>
+                    } @else {
+                        <div class="no-history"><p>No hay transacciones este mes.</p></div>
+                    }
+
+                    @if (isLoading && transactions.length > 0) {
+                        <p class="load-more-message">Cargando más transacciones...</p>
+                    }
+                    @if (loadError && transactions.length > 0) {
+                        <p class="load-more-error" role="alert">
+                            {{loadError}}
+                            <button type="button" class="button-outline" (click)="loadTransactions()">Reintentar</button>
+                        </p>
+                    }
                 </div>
                 <div class="totals">
                     <span class="total-r">
                         <i class="fa-solid fa-file-invoice-dollar"></i>
-                        Total registros: 1
+                        Registros del mes: {{totalCount}}
                     </span>
                     <span class="total-g">
-                        Total gastos:
-                        <span class="amount-g">-156899</span>
+                        Gastos del mes:
+                        <span class="amount-g">-{{totalExpenses | currency}}</span>
                     </span>
                 </div>
             </div>
         </div>
         <div class="card fr-transactions">
             <div class="header-fr">
-                <h3>Agregar Registro</h3>
-                <button class="button-icon red-button">
+                <h3>{{editingTransactionId === null ? 'Agregar Registro' : 'Editar Registro'}}</h3>
+                <button
+                    type="button"
+                    class="button-icon red-button"
+                    aria-label="Limpiar formulario"
+                    (click)="resetForm()"
+                >
                     <i class="fa-solid fa-trash-can"></i>
                 </button>
             </div>
             <div class="body-fr">
-                <form>
+                <form #transactionForm="ngForm" (ngSubmit)="saveTransaction()">
                     <div class="field-fr">
-                        <label>Fecha</label>
+                        <label for="transaction-date">Fecha</label>
                         <div class="input-fr">
                             <i class="fa-regular fa-calendar"></i>
-                            <input #datePicker type="date" [(ngModel)]="date" name="date" class="native-date-picker">
-                            <input type="text" readonly placeholder="Selecciona una fecha" [value]="formattedDate"
-                                (focus)="datePicker.showPicker()" class="date-picker">
+                            <input
+                                #datePicker
+                                id="transaction-date"
+                                type="date"
+                                [(ngModel)]="form.date"
+                                name="date"
+                                class="native-date-picker"
+                                required
+                            >
+                            <input
+                                type="text"
+                                readonly
+                                placeholder="Selecciona una fecha"
+                                [value]="formattedDate"
+                                (focus)="datePicker.showPicker()"
+                                class="date-picker"
+                                aria-label="Fecha seleccionada"
+                            >
                         </div>
                     </div>
                     <div class="field-fr">
-                        <label>Valor</label>
+                        <label for="transaction-amount">Valor</label>
                         <div class="input-fr">
                             <div class="icon-number">
                                 <i class="fa-solid fa-dollar-sign"></i>
                             </div>
-                            <input type="number" placeholder="0.00">
+                            <input
+                                id="transaction-amount"
+                                type="number"
+                                [(ngModel)]="form.amount"
+                                name="amount"
+                                placeholder="0.00"
+                                min="0.01"
+                                step="0.01"
+                                required
+                            >
                         </div>
                     </div>
                     <div class="field-fr">
-                        <label>Descripción</label>
+                        <label for="transaction-description">Descripción</label>
                         <div class="input-fr">
-                            <input type="text" placeholder="Escribe una descripción" />
+                            <input
+                                id="transaction-description"
+                                type="text"
+                                [(ngModel)]="form.description"
+                                name="description"
+                                placeholder="Escribe una descripción"
+                                required
+                            >
                         </div>
                     </div>
                     <div class="field-fr">
-                        <label>Categoría</label>
-                        <!-- <div class="input-fr"> -->
-                        <select class="selector">
-                            <option value="Mensual">Hogar</option>
-                            <option value="Trimestral">Entretenimiento</option>
-                            <option value="Anual">Viaticos</option>
+                        <label for="transaction-category">Categoría</label>
+                        <select
+                            id="transaction-category"
+                            class="selector"
+                            [(ngModel)]="form.categoryId"
+                            name="category"
+                            [disabled]="isLoadingCategories || !!categoriesError"
+                            required
+                        >
+                            <option [ngValue]="null" disabled>
+                                {{isLoadingCategories ? 'Cargando categorías...' : 'Selecciona una categoría'}}
+                            </option>
+                            @for (category of categories; track category.id) {
+                                <option [ngValue]="category.id">{{category.name}}</option>
+                            }
                         </select>
-                        <!-- </div> -->
                     </div>
                     <div class="field-fr">
-                        <label>Tipo</label>
-                        <!-- <div class="input-fr"> -->
-                        <select class="selector">
-                            <option value="Mensual">Egreso</option>
-                            <option value="Trimestral">Ingreso</option>
+                        <label for="transaction-type">Tipo</label>
+                        <select
+                            id="transaction-type"
+                            class="selector"
+                            [(ngModel)]="form.type"
+                            name="type"
+                            required
+                        >
+                            <option value="expense">Egreso</option>
+                            <option value="income">Ingreso</option>
                         </select>
-                        <!-- </div> -->
                     </div>
+                    @if (categoriesError) {
+                        <p class="form-error" role="alert">{{categoriesError}}</p>
+                    }
+                    @if (formError) {
+                        <p class="form-error" role="alert">{{formError}}</p>
+                    }
+                    @if (formSuccessMessage) {
+                        <p class="form-success" role="status">{{formSuccessMessage}}</p>
+                    }
+                    <button
+                        class="button-primary"
+                        type="submit"
+                        [style.width.%]="100"
+                        [disabled]="transactionForm.invalid || isSaving || isLoadingCategories || categories.length === 0"
+                    >
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        {{isSaving ? 'Guardando...' : editingTransactionId === null ? 'Guardar' : 'Actualizar'}}
+                    </button>
                 </form>
-                <button class="button-primary" [style.width.%]="100">
-                    <i class="fa-solid fa-floppy-disk"></i>
-                    Guardar
-                </button>
             </div>
         </div>
     </div>

@@ -61,18 +61,40 @@
         .body-ls {
             display: flex;
             flex-direction: column;
-            height: 100%;
-            position: relative;
-            padding-bottom: 60px;
+            gap: $spacing-sm;
+
+            .transactions-scroll {
+                height: 60vh;
+                min-height: 260px;
+                max-height: 640px;
+                overflow-y: auto;
+                overscroll-behavior: contain;
+                padding-right: $spacing-xs;
+            }
 
             .no-history {
                 display: flex;
+                flex-direction: column;
                 align-items: center;
                 justify-content: center;
+                gap: $spacing-sm;
+                padding: $spacing-xl 0;
 
                 p {
                     font-size: 1rem;
                 }
+            }
+
+            .load-more-message,
+            .load-more-error {
+                padding: $spacing-sm;
+                color: $text-secondary;
+                text-align: center;
+                font-size: 0.875rem;
+            }
+
+            .load-more-error {
+                color: $text-red;
             }
 
             .line {
@@ -81,8 +103,6 @@
 
             .totals {
                 width: 100%;
-                position: absolute;
-                bottom: 10px;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -150,6 +170,20 @@
             display: flex;
             flex-direction: column;
             gap: $spacing-md;
+
+            .form-error,
+            .form-success {
+                margin: 0;
+                font-size: 0.875rem;
+            }
+
+            .form-error {
+                color: $text-red;
+            }
+
+            .form-success {
+                color: $text-green-dark;
+            }
 
             .input-fr {
                 position: relative;

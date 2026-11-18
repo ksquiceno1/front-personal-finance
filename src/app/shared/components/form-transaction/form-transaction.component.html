@@ -73,13 +73,17 @@
           <select
             id="transaction-category"
             class="selector"
-            [(ngModel)]="transaction.category"
+            [(ngModel)]="transaction.categoryId"
             name="category"
+            [disabled]="isLoadingCategories || !!categoryLoadError"
             required
           >
-            <option value="Hogar">Hogar</option>
-            <option value="Entretenimiento">Entretenimiento</option>
-            <option value="Viáticos">Viáticos</option>
+            <option [ngValue]="null" disabled>
+              {{isLoadingCategories ? 'Cargando categorías...' : 'Selecciona una categoría'}}
+            </option>
+            @for (category of categories; track category.id) {
+              <option [ngValue]="category.id">{{category.name}}</option>
+            }
           </select>
         </div>
         <div class="field-fr">
@@ -95,9 +99,22 @@
             <option value="income">Ingreso</option>
           </select>
         </div>
-        <button class="button-primary save-button" type="submit" [disabled]="transactionForm.invalid">
+        @if (categoryLoadError) {
+          <div class="form-error" role="alert">
+            <span>{{categoryLoadError}}</span>
+            <button type="button" class="button-outline" (click)="loadCategories()">Reintentar</button>
+          </div>
+        }
+        @if (saveError) {
+          <p class="form-error" role="alert">{{saveError}}</p>
+        }
+        <button
+          class="button-primary save-button"
+          type="submit"
+          [disabled]="transactionForm.invalid || isSaving || isLoadingCategories || categories.length === 0"
+        >
           <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i>
-          Guardar
+          {{isSaving ? 'Guardando...' : 'Guardar'}}
         </button>
       </form>
     </div>

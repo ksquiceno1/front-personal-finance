@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChartBarComponent } from '../shared/components/chart-bar/chart-bar.component';
 import { FormTransactionComponent } from '../shared/components/form-transaction/form-transaction.component';
+import { resolveCategoryIconClass } from '../shared/utils/category-icons';
 import { AuthService } from '../shared/services/auth.service';
 import {
   DashboardChartPeriod,
@@ -64,13 +65,6 @@ export class Dashboard implements OnInit {
   isLoadingTransactions = true;
   transactionsLoadError = '';
 
-  private readonly categoryIconClasses: Record<string, string> = {
-    bus: 'fa-solid fa-bus',
-    fork: 'fa-solid fa-utensils',
-    house: 'fa-regular fa-house',
-    wallet: 'fa-solid fa-wallet',
-  };
-
   get formattedDate(): string {
     const date = new Date(this.date);
     const day = date.getDate();
@@ -80,55 +74,9 @@ export class Dashboard implements OnInit {
 
   ngOnInit(): void {
     this.loadChart(this.chartPeriod);
-
-    this.dashboardService.getBalance().subscribe({
-      next: (balance) => {
-        this.income = balance.income;
-        this.expenses = balance.expenses;
-        this.balance = balance.balance;
-        this.incomeComparison = balance.incomeComparison;
-        this.expenseComparison = balance.expenseComparison;
-        this.isLoadingBalance = false;
-        this.changeDetector.markForCheck();
-      },
-      error: (error: unknown) => {
-        this.balanceLoadError = error instanceof Error
-          ? error.message
-          : 'No se pudo cargar el balance.';
-        this.isLoadingBalance = false;
-        this.changeDetector.markForCheck();
-      },
-    });
-
-    this.dashboardService.getTopCategories().subscribe({
-      next: (categories) => {
-        this.topCategories = categories;
-        this.isLoadingCategories = false;
-        this.changeDetector.markForCheck();
-      },
-      error: (error: unknown) => {
-        this.categoriesLoadError = error instanceof Error
-          ? error.message
-          : 'No se pudieron cargar las categorías principales.';
-        this.isLoadingCategories = false;
-        this.changeDetector.markForCheck();
-      },
-    });
-
-    this.dashboardService.getRecentTransactions().subscribe({
-      next: (transactions) => {
-        this.transactions = transactions;
-        this.isLoadingTransactions = false;
-        this.changeDetector.markForCheck();
-      },
-      error: (error: unknown) => {
-        this.transactionsLoadError = error instanceof Error
-          ? error.message
-          : 'No se pudieron cargar las transacciones recientes.';
-        this.isLoadingTransactions = false;
-        this.changeDetector.markForCheck();
-      },
-    });
+    this.loadBalance();
+    this.loadTopCategories();
+    this.loadRecentTransactions();
 
     this.authService.getCurrentUser().subscribe({
       next: (user) => {
@@ -151,6 +99,74 @@ export class Dashboard implements OnInit {
 
   closeTransactionModal(): void {
     this.showTransactionModal = false;
+  }
+
+  onTransactionSaved(): void {
+    this.loadBalance();
+    this.loadTopCategories();
+    this.loadRecentTransactions();
+    this.loadChart(this.chartPeriod);
+  }
+
+  private loadBalance(): void {
+    this.isLoadingBalance = true;
+    this.balanceLoadError = '';
+    this.dashboardService.getBalance().subscribe({
+      next: (balance) => {
+        this.income = balance.income;
+        this.expenses = balance.expenses;
+        this.balance = balance.balance;
+        this.incomeComparison = balance.incomeComparison;
+        this.expenseComparison = balance.expenseComparison;
+        this.isLoadingBalance = false;
+        this.changeDetector.markForCheck();
+      },
+      error: (error: unknown) => {
+        this.balanceLoadError = error instanceof Error
+          ? error.message
+          : 'No se pudo cargar el balance.';
+        this.isLoadingBalance = false;
+        this.changeDetector.markForCheck();
+      },
+    });
+  }
+
+  private loadTopCategories(): void {
+    this.isLoadingCategories = true;
+    this.categoriesLoadError = '';
+    this.dashboardService.getTopCategories().subscribe({
+      next: (categories) => {
+        this.topCategories = categories;
+        this.isLoadingCategories = false;
+        this.changeDetector.markForCheck();
+      },
+      error: (error: unknown) => {
+        this.categoriesLoadError = error instanceof Error
+          ? error.message
+          : 'No se pudieron cargar las categorías principales.';
+        this.isLoadingCategories = false;
+        this.changeDetector.markForCheck();
+      },
+    });
+  }
+
+  private loadRecentTransactions(): void {
+    this.isLoadingTransactions = true;
+    this.transactionsLoadError = '';
+    this.dashboardService.getRecentTransactions().subscribe({
+      next: (transactions) => {
+        this.transactions = transactions;
+        this.isLoadingTransactions = false;
+        this.changeDetector.markForCheck();
+      },
+      error: (error: unknown) => {
+        this.transactionsLoadError = error instanceof Error
+          ? error.message
+          : 'No se pudieron cargar las transacciones recientes.';
+        this.isLoadingTransactions = false;
+        this.changeDetector.markForCheck();
+      },
+    });
   }
 
   loadChart(period: DashboardChartPeriod): void {
@@ -213,10 +229,6 @@ export class Dashboard implements OnInit {
   }
 
   getCategoryIconClass(icon: string): string {
-    if (icon.startsWith('fa-')) {
-      return icon;
-    }
-
-    return this.categoryIconClasses[icon.toLowerCase()] ?? 'fa-solid fa-tag';
+    return resolveCategoryIconClass(icon);
   }
 }

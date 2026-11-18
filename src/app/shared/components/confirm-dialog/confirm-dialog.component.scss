@@ -1,0 +1,69 @@
+@use '../../../../styles/variables.scss' as *;
+
+.confirm-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-md;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.confirm-modal {
+  width: min(100%, 440px);
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+
+  p {
+    margin: 0;
+    color: $text-secondary;
+    line-height: 1.5;
+  }
+
+  .confirm-modal-header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+
+    h2 {
+      margin: 0;
+      color: $text-green-dark;
+      font-size: 1.125rem;
+    }
+  }
+
+  .confirm-modal-icon {
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: $bg-red-icon;
+    color: $text-red;
+  }
+
+  .confirm-modal-error {
+    color: $text-red;
+    font-size: 0.875rem;
+  }
+
+  .confirm-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: $spacing-sm;
+  }
+
+  .confirm-modal-action {
+    background: $bg-red;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+}
