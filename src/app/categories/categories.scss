@@ -1,5 +1,11 @@
 @use '../../styles/variables.scss' as *;
 
+:host {
+    display: block;
+    height: 100%;
+    min-height: 0;
+}
+
 @mixin sections {
     display: flex;
     flex-direction: column;
@@ -27,6 +33,8 @@
 
 .container {
     width: 100%;
+    height: 100%;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     gap: $spacing-md;
@@ -66,11 +74,14 @@
 
 .content {
     display: flex;
-    flex-wrap: wrap;
+    flex: 1;
+    min-height: 0;
     gap: $spacing-sm;
 
     .ls-categories {
-        flex: 1;
+        flex: 2 1 0;
+        min-height: 0;
+        margin-bottom: 0;
         @include sections();
 
         .header-ls {
@@ -82,10 +93,13 @@
         .body-ls {
             display: flex;
             flex-direction: column;
+            flex: 1;
+            min-height: 0;
             gap: $spacing-xs;
             position: relative;
-            height: 100%;
-            padding-bottom: 60px;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            padding-right: $spacing-xs;
 
             .card-cat {
                 display: flex;
@@ -96,6 +110,15 @@
                 border-radius: 6px;
                 border: 1px solid #ededf1;
                 background: $background-color;
+                cursor: pointer;
+                transition: background-color $transition-duration, border-color $transition-duration;
+
+                &:hover,
+                &:focus-visible {
+                    border-color: #d9ead9;
+                    background: #f3f8f3;
+                    outline: none;
+                }
 
                 .icon {
                     border-radius: 6px;
@@ -155,7 +178,9 @@
     }
 
     .ls-transactions {
-        flex: 60% 0;
+        flex: 3 1 0;
+        min-height: 0;
+        margin-bottom: 0;
         @include sections();
 
         .header-tr {
@@ -173,6 +198,18 @@
 
                 i {
                     font-size: 1.25rem;
+                }
+            }
+
+            @media (max-width: ($breakpoint-tablet - 1px)) {
+                .content {
+                    flex-direction: column;
+
+                    .ls-categories,
+                    .ls-transactions {
+                        flex: 1 1 0;
+                        min-height: 0;
+                    }
                 }
             }
 
@@ -194,7 +231,10 @@
 
         .body-tr {
             position: relative;
-            height: 100%;
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            overscroll-behavior: contain;
             padding-bottom: 60px;
 
             .no-history {

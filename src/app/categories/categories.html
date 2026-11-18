@@ -1,7 +1,7 @@
 @if (showTransactionModal) {
     <app-form-transaction
         (closed)="closeTransactionModal()"
-        (saved)="closeTransactionModal()"
+        (saved)="onTransactionSaved()"
     />
 }
 <div class="container">
@@ -21,82 +21,121 @@
                 <h3>Mis categorías</h3>
             </div>
             <div class="body-ls">
-                <div class="card-cat active">
-                    <div class="icon" [style.background]="'#e8f3e5'">
-                        <i class="fa-regular fa-house" [style.color]="'#135812'"></i>
+                @if (isLoadingCategories) {
+                    <div class="info" role="status">
+                        <i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>
+                        <p>Cargando categorías...</p>
                     </div>
-                    <div class="details">
-                        <span class="name">
-                            Hogar
-                        </span>
-                        <div class="actions">
-                            <span class="number">2</span>
-                            <i class="fa-solid fa-angle-right"></i>
+                } @else if (categoriesLoadError) {
+                    <div class="info" role="alert">
+                        <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+                        <p>{{categoriesLoadError}}</p>
+                        <button type="button" class="button-outline" (click)="loadCategories()">Reintentar</button>
+                    </div>
+                } @else if (categories.length > 0) {
+                    @for (category of categories; track category.id) {
+                        <div
+                            class="card-cat"
+                            [class.active]="selectedCategory?.id === category.id"
+                            role="button"
+                            tabindex="0"
+                            [attr.aria-pressed]="selectedCategory?.id === category.id"
+                            (click)="selectCategory(category)"
+                            (keydown.enter)="selectCategory(category)"
+                            (keydown.space)="selectCategory(category); $event.preventDefault()"
+                        >
+                            <div class="icon" [style.background]="'#e8f3e5'">
+                                <i [class]="getCategoryIconClass(category.icon)" [style.color]="'#135812'" aria-hidden="true"></i>
+                            </div>
+                            <div class="details">
+                                <span class="name">{{category.name}}</span>
+                                <div class="actions">
+                                    <span class="number">{{category.transaction_count}}</span>
+                                    <i class="fa-solid fa-angle-right" aria-hidden="true"></i>
+                                </div>
+                            </div>
                         </div>
+                    }
+                } @else {
+                    <div class="info">
+                        <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+                        <p>No tienes categorías disponibles.</p>
                     </div>
-                </div>
-                <div class="info">
-                    <i class="fa-solid fa-circle-info"></i>
-                    <p>Selecciona una categoría para ver sus transacciones y gastos</p>
-                </div>
+                }
             </div>
         </div>
         <div class="card ls-transactions">
             <div class="header-tr">
-                <div class="icon-cat">
-                    <i class="fa-regular fa-house"></i>
+                <div class="icon-cat" [style.background]="'#e8f3e5'">
+                    <i [class]="getCategoryIconClassForSelection()" [style.color]="'#135812'" aria-hidden="true"></i>
                 </div>
                 <div class="section-title">
-                    <h3>Transacciones hogar</h3>
-                    <span>2 Registros</span>
+                    <h3>{{selectedCategory ? 'Transacciones ' + selectedCategory.name : 'Transacciones por categoría'}}</h3>
+                    @if (selectedCategory) {
+                        <span>{{selectedCategory.transaction_count}} Registros</span>
+                    } @else {
+                        <span>Selecciona una categoría</span>
+                    }
                 </div>
             </div>
             <div class="body-tr">
-                <div class="transaction" [ngClass]="{'expense': true, 'income': false}">
-                    <div class="cat" [ngClass]="{'expense': true, 'income': false}">
-                        <i class="fa-regular fa-house"></i>
+                @if (!selectedCategory) {
+                    <div class="no-history">
+                        <p>Selecciona una categoría para ver sus transacciones.</p>
                     </div>
-                    <div class="details">
-                        <div class="section">
-                            <span class="description">Arriendo</span>
-                            <span class="amount">-$610000</span>
-                        </div>
-                        <div class="section">
-                            <span class="date">05/06/2026</span>
-                            <span class="type">Egreso</span>
-                        </div>
+                } @else if (isLoadingCategoryTransactions) {
+                    <div class="no-history" role="status">
+                        <p>Cargando transacciones...</p>
                     </div>
-                    <div class="menu-container">
-                        <button class="button-icon" (click)="showMenu = !showMenu">
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                        </button>
-                        @if(showMenu) {
-                        <div class="menu">
-                            <button class="item-menu">
-                                <i class="fa-solid fa-pen" [style.color]="'#025ad2'"></i>
-                                Editar
-                            </button>
-                            <button class="item-menu" [style.border]="'none'">
-                                <i class="fa-solid fa-trash-can" [style.color]="'#c40b0e'"></i>
-                                Eliminar
-                            </button>
-                        </div>
-                        }
+                } @else if (categoryTransactionsError) {
+                    <div class="no-history" role="alert">
+                        <p>{{categoryTransactionsError}}</p>
+                        <button type="button" class="button-outline" (click)="reloadSelectedCategory()">Reintentar</button>
                     </div>
+                } @else if (categoryTransactions.length > 0) {
+                    @for (transaction of categoryTransactions; track transaction.id) {
+                        <div class="transaction" [ngClass]="transaction.type">
+                            <div class="cat" [ngClass]="transaction.type">
+                                <i [class]="getCategoryIconClassForSelection()" aria-hidden="true"></i>
+                            </div>
+                            <div class="details">
+                                <div class="section">
+                                    <span class="description">{{transaction.description || 'Sin descripción'}}</span>
+                                    <span class="amount">
+                                        {{transaction.type === 'expense' ? '-' : '+'}}{{transaction.amount | currency}}
+                                    </span>
+                                </div>
+                                <div class="section">
+                                    <span class="date">{{transaction.date | date:'dd/MM/yyyy'}}</span>
+                                    <span class="type">{{transaction.type === 'expense' ? 'Egreso' : 'Ingreso'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                } @else {
+                    <div class="no-history">
+                        <p>No hay transacciones en esta categoría.</p>
+                    </div>
+                }
 
-                </div>
-                <div class="no-history">
-                    <p>No hay historial</p>
-                </div>
-                <div class="info-total">
-                    <span class="subtitle">
-                        <span class="icon-w">
-                            <i class="fa-solid fa-wallet"></i>
+                @if (selectedCategory && !isLoadingCategoryTransactions && !categoryTransactionsError) {
+                    <div class="info-total">
+                        <span class="subtitle">
+                            <span class="icon-w">
+                                <i
+                                    class="fa-solid"
+                                    [class.fa-arrow-down]="selectedCategoryIsIncome"
+                                    [class.fa-wallet]="!selectedCategoryIsIncome"
+                                    aria-hidden="true"
+                                ></i>
+                            </span>
+                            {{selectedCategoryIsIncome ? 'Total ingresos' : 'Total gastos'}}
                         </span>
-                        Total gastos
-                    </span>
-                    <span class="amount">-$250000</span>
-                </div>
+                        <span class="amount">
+                            {{selectedCategoryIsIncome ? '+' : '-'}}{{selectedCategoryTotal | currency}}
+                        </span>
+                    </div>
+                }
             </div>
         </div>
     </div>
