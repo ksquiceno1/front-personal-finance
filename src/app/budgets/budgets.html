@@ -1,3 +1,21 @@
+@if (showBudgetModal) {
+    <app-budget-form-modal
+        [budget]="selectedBudget"
+        (saved)="onBudgetSaved()"
+        (closed)="closeBudgetModal()"
+    />
+}
+@if (pendingDeleteBudget) {
+    <app-confirm-dialog
+        title="Eliminar presupuesto"
+        [message]="'¿Seguro que deseas eliminar el presupuesto de ' + pendingDeleteBudgetName + '? Esta acción no se puede deshacer.'"
+        confirmLabel="Eliminar"
+        [errorMessage]="deleteBudgetError"
+        [isConfirming]="isDeletingBudget"
+        (confirmed)="confirmDeleteBudget()"
+        (cancelled)="cancelDeleteBudget()"
+    />
+}
 <div class="container">
     <div class="header">
         <div class="title">
@@ -6,7 +24,7 @@
             </div>
             <h1>Presupuestos</h1>
         </div>
-        <button class="button-primary">
+        <button type="button" class="button-primary" (click)="openCreateBudgetModal()">
             <i class="fa-solid fa-plus"></i>
             Agregar Presupuesto
         </button>
@@ -14,13 +32,27 @@
     <div class="content">
         <!-- Sección Resumen presupuesto, gastos, disponible, categorías -->
         <div class="section-1">
+            @if (balanceLoadError) {
+                <div class="balance-error" role="alert">
+                    <span>{{balanceLoadError}}</span>
+                    <button type="button" class="button-outline" (click)="loadBudgetBalance()">Reintentar</button>
+                </div>
+            }
             <div class="card info-card">
                 <div class="icon-sec">
                     <i class="fa-solid fa-wallet"></i>
                 </div>
                 <div class="details">
                     <span class="subtitle">Presupuesto total</span>
-                    <span class="amount">$2.500.000</span>
+                    <span class="amount">
+                        @if (isLoadingBalance) {
+                            Cargando...
+                        } @else if (budgetBalance) {
+                            {{budgetBalance.totalBudget | currency}}
+                        } @else {
+                            —
+                        }
+                    </span>
                     <span class="extra">Este mes</span>
                 </div>
             </div>
@@ -30,8 +62,24 @@
                 </div>
                 <div class="details">
                     <span class="subtitle">Gastado</span>
-                    <span class="amount">$1.650.000</span>
-                    <span class="extra">65% del total</span>
+                    <span class="amount">
+                        @if (isLoadingBalance) {
+                            Cargando...
+                        } @else if (budgetBalance) {
+                            {{budgetBalance.spent | currency}}
+                        } @else {
+                            —
+                        }
+                    </span>
+                    <span class="extra">
+                        @if (budgetBalance && !isLoadingBalance) {
+                            {{budgetBalance.spentPercentage | number:'1.0-2'}}% del total
+                        } @else if (isLoadingBalance) {
+                            Cargando...
+                        } @else {
+                            —
+                        }
+                    </span>
                 </div>
             </div>
             <div class="card info-card">
@@ -40,8 +88,24 @@
                 </div>
                 <div class="details">
                     <span class="subtitle">Disponible</span>
-                    <span class="amount">$850.000</span>
-                    <span class="extra">34% del total</span>
+                    <span class="amount">
+                        @if (isLoadingBalance) {
+                            Cargando...
+                        } @else if (budgetBalance) {
+                            {{budgetBalance.available | currency}}
+                        } @else {
+                            —
+                        }
+                    </span>
+                    <span class="extra">
+                        @if (budgetBalance && !isLoadingBalance) {
+                            {{budgetBalance.availablePercentage | number:'1.0-2'}}% del total
+                        } @else if (isLoadingBalance) {
+                            Cargando...
+                        } @else {
+                            —
+                        }
+                    </span>
                 </div>
             </div>
             <div class="card info-card">
@@ -50,8 +114,16 @@
                 </div>
                 <div class="details">
                     <span class="subtitle">Categorias activas</span>
-                    <span class="amount">5</span>
-                    <span class="extra">De 6 categorías</span>
+                    <span class="amount">
+                        @if (isLoadingBalance) {
+                            Cargando...
+                        } @else if (budgetBalance) {
+                            {{budgetBalance.activeCategories}}
+                        } @else {
+                            —
+                        }
+                    </span>
+                    <span class="extra">En el mes actual</span>
                 </div>
             </div>
         </div>
@@ -63,31 +135,63 @@
                     <h3>Resumen del presupuesto</h3>
                     <div class="date-picker-container">
                         <i class="fa-regular fa-calendar"></i>
-                        <input #nativeDatePicker type="date" [(ngModel)]="date" class="native-date-picker">
+                        <input
+                            #nativeDatePicker
+                            type="date"
+                            [(ngModel)]="date"
+                            (ngModelChange)="loadBudgetSummary()"
+                            class="native-date-picker"
+                        >
                         <input type="text" [value]="formattedDate" readonly class="date-picker"
                             (focus)="nativeDatePicker.showPicker()">
                     </div>
                 </div>
                 <div class="chart-container">
                     <div class="circle">
-                        <app-chart-circle [percentage]="65" [size]="180"></app-chart-circle>
+                        <app-chart-circle
+                            [percentage]="budgetSummary?.usedPercentage ?? 0"
+                            [size]="180"
+                        ></app-chart-circle>
                     </div>
                     <div class="chart-details">
-                        @for(item of [1, 2, 3, 4]; track item) {
-                        <div class="category">
-                            <span class="category-info">
-                                <span class="ball" [style.background]="'green'"></span>
-                                <span class="name">Necesidades</span>
-                            </span>
-                            <span class="amount">{{item == 2 ? '$800.000':'$1.000.000'}}</span>
-                            <span class="percentage">40%</span>
-                        </div>
+                        @if (isLoadingSummary) {
+                            <p role="status">Cargando resumen...</p>
+                        } @else if (summaryLoadError) {
+                            <div class="summary-error" role="alert">
+                                <span>{{summaryLoadError}}</span>
+                                <button type="button" class="button-outline" (click)="loadBudgetSummary()">Reintentar</button>
+                            </div>
+                        } @else if (budgetSummary; as summary) {
+                            @if (summary.categories.length > 0) {
+                                @for (category of summary.categories; track category.name) {
+                                    <div class="category">
+                                        <span class="category-info">
+                                            <span class="ball" [style.background]="'green'"></span>
+                                            <span class="name">{{category.name}}</span>
+                                        </span>
+                                        <span class="amount">{{category.totalSpent | currency}}</span>
+                                        <span class="percentage">{{category.percentage | number:'1.0-2'}}%</span>
+                                    </div>
+                                }
+                            } @else {
+                                <p>No hay presupuestos utilizados en este mes.</p>
+                            }
+                        } @else {
+                            <p>No hay presupuestos utilizados en este mes.</p>
                         }
                     </div>
                 </div>
                 <div class="info" [style.max-width.%]="93">
                     <i class="fa-solid fa-circle-info"></i>
-                    <p>Llevas un buen control, ¡Sigue así!</p>
+                    <p>
+                        @if (isLoadingSummary) {
+                            Cargando resumen del presupuesto...
+                        } @else if (budgetSummary) {
+                            Has utilizado {{budgetSummary.usedPercentage | number:'1.0-2'}}% del presupuesto del mes.
+                        } @else {
+                            Consulta el estado del presupuesto mensual.
+                        }
+                    </p>
                 </div>
             </div>
             <div class="card categories">
@@ -95,23 +199,39 @@
                     <h3>Presupuestos por categoría</h3>
                 </div>
                 <div class="category-list">
-                    @for(item of [1, 2, 3, 4]; track item) {
-                    <div class="category-item">
-                        <div class="icon-cat" [style.background]="'lightgreen'">
-                            <i class="fa-solid fa-wallet" [style.color]="'green'"></i>
+                    @if (isLoadingCategoryBudgets) {
+                        <p role="status">Cargando presupuestos...</p>
+                    } @else if (categoryBudgetsLoadError) {
+                        <div class="category-load-error" role="alert">
+                            <span>{{categoryBudgetsLoadError}}</span>
+                            <button type="button" class="button-outline" (click)="loadCategoryBudgets()">Reintentar</button>
                         </div>
-                        <div class="details">
-                            <div class="top">
-                                <span class="name">Necesidades</span>
-                                <span class="amount">{{item == 2 ? '$800.000':'$1.000.000'}}</span>
-                            </div>
-                            <div class="progress-container">
-                                <div class="progress-bar" [style.width.%]="85" [style.background]="'green'">
+                    } @else if (categoryBudgets.length > 0) {
+                        @for (category of categoryBudgets; track category.name) {
+                            <div class="category-item">
+                                <div class="icon-cat" [style.background]="'#e8f3e5'">
+                                    <i [class]="getCategoryIconClass(category.icon)" [style.color]="'#135812'" aria-hidden="true"></i>
                                 </div>
+                                <div class="details">
+                                    <div class="top">
+                                        <span class="name">{{category.name}}</span>
+                                        <span class="amount">{{category.budgetAmount | currency}}</span>
+                                    </div>
+                                    <div class="progress-container">
+                                        <div
+                                            class="progress-bar"
+                                            [style.width.%]="category.percentage"
+                                            [style.background]="'green'"
+                                        ></div>
+                                    </div>
+                                </div>
+                                <span class="percentage" [style.color]="'green'">
+                                    {{category.percentage | number:'1.0-2'}}%
+                                </span>
                             </div>
-                        </div>
-                        <span class="percentage" [style.color]="'green'">40%</span>
-                    </div>
+                        }
+                    } @else {
+                        <p>No hay presupuestos por categoría para este mes.</p>
                     }
                 </div>
             </div>
@@ -123,7 +243,48 @@
                 <div class="recent-header">
                     <h3>Presupuestos recientes</h3>
                 </div>
-                <app-table-dynamic [columns]="columns" [rows]="rows"></app-table-dynamic>
+                @if (isLoadingBudgets) {
+                    <p role="status">Cargando presupuestos...</p>
+                } @else if (budgetsLoadError) {
+                    <div class="budgets-table-error" role="alert">
+                        <span>{{budgetsLoadError}}</span>
+                        <button type="button" class="button-outline" (click)="loadBudgets()">Reintentar</button>
+                    </div>
+                } @else if (budgetRows.length > 0) {
+                    <app-table-dynamic
+                        [columns]="columns"
+                        [rows]="rows"
+                        (action)="onBudgetTableAction($event)"
+                    ></app-table-dynamic>
+                    <div class="budget-pagination">
+                        <span>Mostrando {{firstVisibleBudget}}–{{lastVisibleBudget}} de {{budgetRows.length}}</span>
+                        <div class="pagination-actions">
+                            <button
+                                type="button"
+                                class="button-outline"
+                                aria-label="Página anterior"
+                                [disabled]="currentBudgetPage === 1"
+                                (click)="previousBudgetPage()"
+                            >
+                                <i class="fa-solid fa-arrow-left pagination-icon" aria-hidden="true"></i>
+                                <span class="pagination-label">Anterior</span>
+                            </button>
+                            <span class="page-label">Página {{currentBudgetPage}} de {{budgetPageCount}}</span>
+                            <button
+                                type="button"
+                                class="button-outline"
+                                aria-label="Página siguiente"
+                                [disabled]="currentBudgetPage === budgetPageCount"
+                                (click)="nextBudgetPage()"
+                            >
+                                <span class="pagination-label">Siguiente</span>
+                                <i class="fa-solid fa-arrow-right pagination-icon" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                } @else {
+                    <p>No hay presupuestos registrados.</p>
+                }
             </div>
             <div class="card advice">
                 <div class="advice-header">

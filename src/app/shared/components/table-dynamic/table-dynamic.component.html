@@ -15,14 +15,23 @@
                     @if(col.actions?.length) {
                     <ng-container>
                         <div class="menu-container">
-                            <button class="button-icon" (click)="row.showMenu = !row.showMenu">
+                            <button
+                                type="button"
+                                class="button-icon"
+                                [attr.aria-label]="'Opciones para ' + row.name"
+                                (click)="row.showMenu = !row.showMenu"
+                            >
                                 <i class="fa-solid fa-ellipsis"></i>
                             </button>
                             @if(row.showMenu) {
                             <div class="menu">
-                                @for (btn of col.actions; track btn;) {
-                                <button class="item-menu" (click)="onActionClick(btn.key, row)">
-                                    <i class="fa-solid fa-pen" [style.color]="'#025ad2'"></i>
+                                @for (btn of col.actions; track btn.key) {
+                                <button type="button" class="item-menu" (click)="onActionClick(btn.key, row)">
+                                    <i
+                                        [class]="btn.icon ?? 'fa-solid fa-pen'"
+                                        [style.color]="btn.key === 'delete' ? '#c40b0e' : '#025ad2'"
+                                        aria-hidden="true"
+                                    ></i>
                                     {{ btn.label }}
                                 </button>
                                 }

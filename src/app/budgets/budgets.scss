@@ -51,6 +51,16 @@
         flex-wrap: wrap;
         gap: $spacing-sm;
 
+        .balance-error {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: $spacing-sm;
+            color: $text-red;
+            font-size: 0.875rem;
+        }
+
         .info-card {
             flex: 1;
             display: flex;
@@ -174,6 +184,15 @@
                             color: $text-secondary;
                         }
                     }
+
+                    .summary-error {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        gap: $spacing-sm;
+                        color: $text-red;
+                        font-size: 0.875rem;
+                    }
                 }
             }
         }
@@ -200,6 +219,15 @@
                 display: flex;
                 flex-direction: column;
                 gap: $spacing-md;
+
+                .category-load-error {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: $spacing-sm;
+                    color: $text-red;
+                    font-size: 0.875rem;
+                }
 
                 .category-item {
                     display: flex;
@@ -264,6 +292,47 @@
             flex-direction: column;
             gap: $spacing-md;
 
+            .budgets-table-error {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: $spacing-sm;
+                color: $text-red;
+                font-size: 0.875rem;
+            }
+
+            .budget-pagination {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                gap: $spacing-sm;
+                color: $text-secondary;
+                font-size: 0.875rem;
+
+                .pagination-actions {
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: nowrap;
+                    align-items: center;
+                    gap: $spacing-sm;
+
+                    button {
+                        width: auto;
+                        padding: $spacing-xs $spacing-sm;
+                        white-space: nowrap;
+                    }
+
+                    .page-label {
+                        white-space: nowrap;
+                    }
+
+                    .pagination-icon {
+                        display: none;
+                    }
+                }
+            }
+
             .recent-header {
                 display: flex;
                 align-items: center;
@@ -273,6 +342,26 @@
                     font-size: 1rem;
                     font-weight: 600;
                     color: $text-green-dark;
+                }
+            }
+
+            @media (max-width: 600px) {
+                .section-3 .recent .budget-pagination {
+                    align-items: flex-start;
+                    flex-direction: column;
+
+                    .pagination-actions {
+                        width: 100%;
+                        justify-content: space-between;
+
+                        .pagination-label {
+                            display: none;
+                        }
+
+                        .pagination-icon {
+                            display: inline;
+                        }
+                    }
                 }
             }
         }

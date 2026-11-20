@@ -1,0 +1,137 @@
+<div
+  class="modal-backdrop"
+  role="presentation"
+  (click)="onBackdropClick($event)"
+  (keydown.escape)="close()"
+>
+  <section
+    class="card budget-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="budget-form-title"
+  >
+    <div class="modal-header">
+      <h2 id="budget-form-title">{{isEditing ? 'Editar presupuesto' : 'Crear presupuesto'}}</h2>
+      <button type="button" class="button-icon close-button" aria-label="Cerrar" (click)="close()">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form #budgetForm="ngForm" (ngSubmit)="onSubmit()">
+        <div class="field-fr">
+          <label for="budget-category">Categoría</label>
+          <select
+            id="budget-category"
+            class="selector"
+            [(ngModel)]="form.categoryId"
+            name="category"
+            [disabled]="isLoadingCategories || !!categoryLoadError"
+            required
+          >
+            <option [ngValue]="null" disabled>
+              {{isLoadingCategories ? 'Cargando categorías...' : 'Selecciona una categoría'}}
+            </option>
+            @for (category of categories; track category.id) {
+              <option [ngValue]="category.id">{{category.name}}</option>
+            }
+          </select>
+        </div>
+
+        <div class="field-fr">
+          <label for="budget-amount">Monto del presupuesto</label>
+          <div class="input-fr">
+            <i class="fa-solid fa-dollar-sign" aria-hidden="true"></i>
+            <input
+              id="budget-amount"
+              type="number"
+              [(ngModel)]="form.amount"
+              name="amount"
+              min="0.01"
+              step="0.01"
+              required
+            >
+          </div>
+        </div>
+
+        <div class="field-fr">
+          <label for="budget-expended">Gastado</label>
+          <div class="input-fr">
+            <i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i>
+            <input
+              id="budget-expended"
+              type="number"
+              [(ngModel)]="form.expended"
+              name="expended"
+              min="0"
+              step="0.01"
+              required
+            >
+          </div>
+        </div>
+
+        <div class="field-fr">
+          <label for="budget-available">Disponible</label>
+          <div class="input-fr">
+            <i class="fa-solid fa-wallet" aria-hidden="true"></i>
+            <input
+              id="budget-available"
+              type="number"
+              [value]="availableAmount"
+              name="available"
+              readonly
+            >
+          </div>
+        </div>
+
+        <div class="date-fields">
+          <div class="field-fr">
+            <label for="budget-start-date">Fecha de inicio</label>
+            <div class="input-fr">
+              <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+              <input
+                id="budget-start-date"
+                type="date"
+                [(ngModel)]="form.startDate"
+                name="startDate"
+                required
+              >
+            </div>
+          </div>
+          <div class="field-fr">
+            <label for="budget-end-date">Fecha de fin</label>
+            <div class="input-fr">
+              <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+              <input
+                id="budget-end-date"
+                type="date"
+                [(ngModel)]="form.endDate"
+                name="endDate"
+                [min]="form.startDate"
+                required
+              >
+            </div>
+          </div>
+        </div>
+
+        @if (categoryLoadError) {
+          <div class="form-error" role="alert">
+            <span>{{categoryLoadError}}</span>
+            <button type="button" class="button-outline" (click)="loadCategories()">Reintentar</button>
+          </div>
+        }
+        @if (saveError) {
+          <p class="form-error" role="alert">{{saveError}}</p>
+        }
+
+        <button
+          class="button-primary save-button"
+          type="submit"
+          [disabled]="budgetForm.invalid || isSaving || isLoadingCategories || categories.length === 0"
+        >
+          <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i>
+          {{isSaving ? 'Guardando...' : isEditing ? 'Actualizar presupuesto' : 'Crear presupuesto'}}
+        </button>
+      </form>
+    </div>
+  </section>
+</div>
