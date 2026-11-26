@@ -1,4 +1,4 @@
-import { Component, ElementRef, input, ViewChild } from "@angular/core";
+import { Component, effect, ElementRef, input, OnDestroy, ViewChild } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import {
     Chart,
@@ -18,14 +18,28 @@ Chart.register(DoughnutController, ArcElement, Tooltip, Legend, Title);
     templateUrl: "./chart-doughnut.component.html",
     styleUrl: "./chart-doughnut.component.scss",
 })
-export class ChartDoughnutComponent {
+export class ChartDoughnutComponent implements OnDestroy {
     @ViewChild("chart") chartRef!: ElementRef<HTMLCanvasElement>;
+    private chart: Chart | null = null;
 
     public readonly data = input.required<ChartDataset[]>();
     public readonly labels = input.required<string[]>();
 
+    constructor() {
+        effect(() => {
+            const data = this.data();
+            const labels = this.labels();
+            if (!this.chart) {
+                return;
+            }
+            this.chart.data.labels = labels;
+            this.chart.data.datasets = data;
+            this.chart.update();
+        });
+    }
+
     ngAfterViewInit() {
-        new Chart(this.chartRef.nativeElement, {
+        this.chart = new Chart(this.chartRef.nativeElement, {
             type: "doughnut",
             data: {
                 labels: this.labels(),
@@ -40,5 +54,9 @@ export class ChartDoughnutComponent {
                 },
             },
         });
+    }
+
+    ngOnDestroy(): void {
+        this.chart?.destroy();
     }
 }

@@ -170,6 +170,18 @@
                             font-size: 0.75rem;
                             color: $text-secondary;
                         }
+
+                        .comparison-positive {
+                            color: $text-green;
+                        }
+
+                        .comparison-negative {
+                            color: $text-red;
+                        }
+
+                        .comparison-neutral {
+                            color: $text-secondary;
+                        }
                     }
 
                     .income {

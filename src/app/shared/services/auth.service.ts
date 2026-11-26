@@ -76,7 +76,7 @@ export class AuthService {
     });
 
     return this.http.post(`${this.apiUrl}/logout/`, { refresh: refreshToken }, { headers }).pipe(
-      tap(() => this.clearTokens()),
+      tap(() => this.clearSession()),
       map(() => undefined),
       catchError((error: unknown) => this.handleError(error)),
     );
@@ -86,7 +86,7 @@ export class AuthService {
     return this.getStoredToken(this.accessTokenKey);
   }
 
-  private clearTokens(): void {
+  clearSession(): void {
     localStorage.removeItem(this.accessTokenKey);
     localStorage.removeItem(this.refreshTokenKey);
     sessionStorage.removeItem(this.accessTokenKey);

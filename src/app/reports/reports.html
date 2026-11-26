@@ -25,22 +25,18 @@
                     </div>
                 </div>
             </div>
-            <button class="button-outline">
+            <button type="button" class="button-outline" (click)="scrollToExportOptions()">
                 <i class="fa-solid fa-download"></i>
                 Exportar
             </button>
         </div>
     </div>
-    <div class="content">
+    <div class="content" #reportContent>
         <!-- Primera sección: Balance general Graficas -->
         <div class="section-1">
             <div class="card summary-card">
                 <div class="card-header">
                     <div class="filters"></div>
-                    <button class="button-outline">
-                        <i class="fa-solid fa-filter"></i>
-                        filtros
-                    </button>
                 </div>
                 <div class="card-content">
                     <div class="card ie-card">
@@ -50,11 +46,11 @@
                         <div class="side">
                             <div class="card-header income">
                                 <h3>Ingresos totales</h3>
-                                <span>$2.500.000</span>
+                                <span>{{ reportBalance ? formatAmount(reportBalance.income) : '$0' }}</span>
                             </div>
                             <div class="card-body">
-                                <i class="fa-solid fa-arrow-trend-up income"></i>
-                                <p><span class="income">+12%</span> vs Mes anterior</p>
+                                <i class="fa-solid" [ngClass]="[comparisonIcon(reportBalance?.incomeComparison), comparisonClass(reportBalance?.incomeComparison)]"></i>
+                                <p><span [ngClass]="comparisonClass(reportBalance?.incomeComparison)">{{ formatComparison(reportBalance?.incomeComparison) }}</span> vs Mes anterior</p>
                             </div>
                         </div>
                     </div>
@@ -65,11 +61,11 @@
                         <div class="side">
                             <div class="card-header expense">
                                 <h3>Gastos totales</h3>
-                                <span>$1.650.000</span>
+                                <span>{{ reportBalance ? formatAmount(reportBalance.expenses) : '$0' }}</span>
                             </div>
                             <div class="card-body">
-                                <i class="fa-solid fa-arrow-trend-down expense"></i>
-                                <p><span class="expense">-8%</span> vs Mes anterior</p>
+                                <i class="fa-solid" [ngClass]="[comparisonIcon(reportBalance?.expenseComparison), comparisonClass(reportBalance?.expenseComparison)]"></i>
+                                <p><span [ngClass]="comparisonClass(reportBalance?.expenseComparison)">{{ formatComparison(reportBalance?.expenseComparison) }}</span> vs Mes anterior</p>
                             </div>
                         </div>
                     </div>
@@ -80,11 +76,11 @@
                         <div class="side">
                             <div class="card-header expense">
                                 <h3>Ahorros</h3>
-                                <span>$850.000</span>
+                                <span>{{ reportBalance ? formatAmount(reportBalance.saved) : '$0' }}</span>
                             </div>
                             <div class="card-body">
-                                <i class="fa-solid fa-arrow-trend-up income"></i>
-                                <p><span class="income">+12%</span> vs Mes anterior</p>
+                                <i class="fa-solid" [ngClass]="[comparisonIcon(reportBalance?.savedComparison), comparisonClass(reportBalance?.savedComparison)]"></i>
+                                <p><span [ngClass]="comparisonClass(reportBalance?.savedComparison)">{{ formatComparison(reportBalance?.savedComparison) }}</span> vs Mes anterior</p>
                             </div>
                         </div>
                     </div>
@@ -95,11 +91,11 @@
                         <div class="side">
                             <div class="card-header expense">
                                 <h3>Saldo final</h3>
-                                <span>$1.200.000</span>
+                                <span>{{ reportBalance ? formatAmount(reportBalance.finalBalance) : '$0' }}</span>
                             </div>
                             <div class="card-body">
-                                <i class="fa-solid fa-arrow-trend-down expense"></i>
-                                <p><span class="expense">-8%</span> vs Mes anterior</p>
+                                <i class="fa-solid" [ngClass]="[comparisonIcon(reportBalance?.finalBalanceComparison), comparisonClass(reportBalance?.finalBalanceComparison)]"></i>
+                                <p><span [ngClass]="comparisonClass(reportBalance?.finalBalanceComparison)">{{ formatComparison(reportBalance?.finalBalanceComparison) }}</span> vs Mes anterior</p>
                             </div>
                         </div>
                     </div>
@@ -109,79 +105,79 @@
                 <div class="card">
                     <div class="header-chart">
                         <h3>Evolución de Ingresos vs. Gastos</h3>
-                        <select [(ngModel)]="select" class="selector">
-                            <option value="Mensual">Mensual</option>
-                            <option value="Trimestral">Trimestral</option>
-                            <option value="Anual">Anual</option>
+                        <select [(ngModel)]="comparativeChartPeriod" (change)="onComparativeChartPeriodChange()" class="selector">
+                            <option value="months">Mensual</option>
+                            <option value="quarters">Trimestral</option>
+                            <option value="years">Anual</option>
                         </select>
                     </div>
-                    <app-chart-line [data]="dataSets" [labels]="chartLabels"></app-chart-line>
+                    <app-chart-line [data]="comparativeChartData" [labels]="comparativeChartLabels"></app-chart-line>
                 </div>
                 <div class="card">
                     <div class="header-chart">
                         <h3>Gastos por categoría</h3>
                     </div>
                     <div class="chart-container">
-                        <app-chart-doughnut [data]="dataSets" [labels]="chartLabels"></app-chart-doughnut>
+                        <app-chart-doughnut [data]="expenseCategoryChartData"
+                            [labels]="expenseCategoryChartLabels"></app-chart-doughnut>
                         <div class="chart-details">
-                            @for(item of [1, 2, 3, 4]; track item) {
+                            @if (isLoadingExpensesByCategory) {
+                            <p role="status">Cargando gastos por categoría...</p>
+                            } @else if (expensesByCategoryLoadError) {
+                            <div class="summary-error" role="alert">
+                                <span>{{ expensesByCategoryLoadError }}</span>
+                                <button type="button" class="button-outline" (click)="loadExpensesByCategory()">Reintentar</button>
+                            </div>
+                            } @else if (reportExpensesByCategory; as report) {
+                            @if (report.categories.length > 0) {
+                            @for (category of report.categories; track category.name; let index = $index) {
                             <div class="category">
                                 <span class="category-info">
-                                    <span class="ball" [style.background]="'green'"></span>
-                                    <span class="name">Necesidades</span>
+                                    <span class="ball" [style.background]="getExpenseCategoryColor(index)"></span>
+                                    <span class="name">{{ category.name }}</span>
                                 </span>
-                                <span class="amount">{{item == 2 ? '$800.000':'$1.000.000'}}</span>
-                                <span class="percentage">40%</span>
+                                <span class="amount">{{ formatAmount(category.amount) }}</span>
+                                <span class="percentage">{{ category.percentage }}%</span>
                             </div>
+                            }
+                            } @else {
+                            <p>No hay gastos por categoría en este periodo.</p>
+                            }
+                            } @else {
+                            <p>No hay gastos por categoría en este periodo.</p>
                             }
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="graphics">
-                <div class="card">
-                    <div class="header-chart">
-                        <h3>Gastos por categoría</h3>
-                        <select [(ngModel)]="select" class="selector">
-                            <option value="Mensual">Pr Monto</option>
-                            <option value="Trimestral">Trimestral</option>
-                            <option value="Anual">Anual</option>
-                        </select>
-                    </div>
-                    <app-chart-bar [data]="dataSets" [labels]="chartLabels"
-                        [orientation]="'horizontal'"></app-chart-bar>
-                </div>
-                <div class="card">
-                    <div class="header-chart">
-                        <h3>Distribución de Gastos</h3>
-                        <select [(ngModel)]="select" class="selector">
-                            <option value="Mensual">Porcentage</option>
-                            <option value="Trimestral">Trimestral</option>
-                            <option value="Anual">Anual</option>
-                        </select>
-                    </div>
-                    <app-chart-doughnut [data]="dataSets" [labels]="chartLabels"></app-chart-doughnut>
-                </div>
-            </div>
-            <div class="card export-card">
+            <div class="card export-card" id="report-export-options" #exportOptions>
                 <div class="card-header">
                     <h3>Exporta tus reportes</h3>
                     <p>Descarga tus reportes en el formato que prefieras.</p>
                 </div>
                 <div class="card-content">
-                    <a>
+                    <a href="#" (click)="downloadReportPdf($event)" [attr.aria-disabled]="isExportingPdf">
                         <i class="fa-solid fa-file-pdf" style="color:rgb(226, 31, 17)"></i>
-                        PDF
+                        {{ isExportingPdf ? 'Generando PDF...' : 'PDF' }}
                     </a>
-                    <a>
+                    <a href="#" (click)="downloadReportExcel($event)" [attr.aria-disabled]="isExportingExcel">
                         <i class="fa-solid fa-file-excel" style="color:rgb(8, 178, 39)"></i>
-                        Excel
+                        {{ isExportingExcel ? 'Generando Excel...' : 'Excel' }}
                     </a>
-                    <a>
+                    <a href="#" (click)="downloadReportCsv($event)" [attr.aria-disabled]="isExportingCsv">
                         <i class="fa-solid fa-file-csv" style="color:rgb(253, 229, 12)"></i>
-                        CSV
+                        {{ isExportingCsv ? 'Generando CSV...' : 'CSV' }}
                     </a>
                 </div>
+                @if (pdfExportError) {
+                <p class="export-error" role="alert">{{ pdfExportError }}</p>
+                }
+                @if (excelExportError) {
+                <p class="export-error" role="alert">{{ excelExportError }}</p>
+                }
+                @if (csvExportError) {
+                <p class="export-error" role="alert">{{ csvExportError }}</p>
+                }
             </div>
         </div>
 
@@ -196,7 +192,7 @@
                         </div>
                         <div class="item-details">
                             <h4>Días del periodo</h4>
-                            <p>30 días</p>
+                            <p>{{ isLoadingSummary ? 'Cargando...' : (reportSummary ? reportSummary.daysPeriod + ' días' : '0 días') }}</p>
                         </div>
                     </div>
                     <div class="ls-item">
@@ -205,7 +201,7 @@
                         </div>
                         <div class="item-details">
                             <h4>Promedio diario de gastos</h4>
-                            <p>$83.333</p>
+                            <p>{{ isLoadingSummary ? 'Cargando...' : (reportSummary ? formatAmount(reportSummary.averageDailyExpense) : '$0') }}</p>
                         </div>
                     </div>
                     <div class="ls-item">
@@ -214,7 +210,9 @@
                         </div>
                         <div class="item-details">
                             <h4>Mayor gasto del periodo</h4>
-                            <p style="color: rgb(196, 11, 14);">arriendo - $600.000</p>
+                            <p style="color: rgb(196, 11, 14);">
+                                {{ formatHighestExpense() }}
+                            </p>
                         </div>
                     </div>
                     <div class="ls-item">
@@ -223,7 +221,9 @@
                         </div>
                         <div class="item-details">
                             <h4>Menor gasto del periodo</h4>
-                            <p style="color: rgb(19, 88, 18);">comida - $50.000</p>
+                            <p style="color: rgb(19, 88, 18);">
+                                {{ formatLowestExpense() }}
+                            </p>
                         </div>
                     </div>
                     <div class="ls-item">
@@ -232,7 +232,9 @@
                         </div>
                         <div class="item-details">
                             <h4>Categoría con mayor gasto</h4>
-                            <p>Hogar (59%)</p>
+                            <p>
+                                {{ formatHighestExpenseCategory() }}
+                            </p>
                         </div>
                     </div>
                 </div>

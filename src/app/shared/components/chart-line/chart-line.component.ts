@@ -1,4 +1,4 @@
-import { Component, ElementRef, input, ViewChild } from "@angular/core";
+import { Component, effect, ElementRef, input, OnDestroy, ViewChild } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import {
     Chart,
@@ -30,14 +30,28 @@ Chart.register(
     templateUrl: "./chart-line.component.html",
     styleUrl: "./chart-line.component.scss",
 })
-export class ChartLineComponent {
+export class ChartLineComponent implements OnDestroy {
     @ViewChild("chart") chartRef!: ElementRef<HTMLCanvasElement>;
+    private chart: Chart | null = null;
 
     public readonly data = input.required<ChartDataset[]>();
     public readonly labels = input.required<string[]>();
 
+    constructor() {
+        effect(() => {
+            const data = this.data();
+            const labels = this.labels();
+            if (!this.chart) {
+                return;
+            }
+            this.chart.data.labels = labels;
+            this.chart.data.datasets = data;
+            this.chart.update();
+        });
+    }
+
     ngAfterViewInit() {
-        new Chart(this.chartRef.nativeElement, {
+        this.chart = new Chart(this.chartRef.nativeElement, {
             type: "line",
             data: {
                 labels: this.labels(),
@@ -58,5 +72,9 @@ export class ChartLineComponent {
                 },
             },
         });
+    }
+
+    ngOnDestroy(): void {
+        this.chart?.destroy();
     }
 }
